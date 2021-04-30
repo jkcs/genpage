@@ -1,6 +1,7 @@
 const path = require('path')
 const merge = require('webpack-merge')
 const HappyPack = require('happypack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const { config: baseWebpackConfig, happyThreadPool } = require('./webpack.base.config')
@@ -10,29 +11,30 @@ const resolve = file => path.resolve(__dirname, file)
 
 module.exports = merge(baseWebpackConfig, {
   devtool: 'source-map',
-  entry: ['./demo/index.js'],
+  entry: '../demo/index.js',
   output: {
     filename: '[name].js',
-    path: resolve('../demo'),
+    path: resolve('../dist'),
     publicPath: '/',
     library: 'aliment',
   },
   resolve: {
     alias: {
-      vuetify: resolve('../src'),
-      vue$: 'vue/dist/vue.esm.js',
+      aliment: resolve('../src')
     },
   },
   module: {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          compilerOptions: {
-            preserveWhitespace: false
-          },
-        },
+        use: {
+          loader: 'vue-loader',
+          options: {
+            compilerOptions: {
+              preserveWhitespace: false,
+            }
+          }
+        }
       },
       {
         test: /\.ts$/,
@@ -74,6 +76,10 @@ module.exports = merge(baseWebpackConfig, {
     disableHostCheck: true
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: '../demo/index.html',
+      filename: 'index.html'
+    }),
     new VueLoaderPlugin(),
     new ForkTsCheckerWebpackPlugin({
       checkSyntacticErrors: true,
@@ -98,6 +104,6 @@ module.exports = merge(baseWebpackConfig, {
       id: 'js',
       threadPool: happyThreadPool,
       loaders: ['babel-loader', 'eslint-loader?cache=true?emitWarning=true'],
-    }),
+    })
   ],
 })
