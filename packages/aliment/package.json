@@ -1,0 +1,19 @@
+{
+  "name": "aliment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "vue": "^2.6.12"
+  },
+  "browserslist": [
+    "Android >= 4.0",
+    "iOS >= 8"
+  ]
+}
