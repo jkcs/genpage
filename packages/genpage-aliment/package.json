@@ -1,49 +1,98 @@
 {
-  "name": "aliment",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.dev.config.js --hot"
+  "name": "vant",
+  "version": "2.11.1",
+  "description": "Mobile UI Components built on Vue",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "style": "lib/index.css",
+  "typings": "types/index.d.ts",
+  "files": [
+    "es",
+    "lib",
+    "types",
+    "vetur"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "bootstrap": "yarn || npm i",
+    "dev": "genpage-cli dev",
+    "lint": "vant-cli lint",
+    "test": "vant-cli test",
+    "build": "vant-cli build",
+    "release": "vant-cli release",
+    "test:watch": "vant-cli test --watch",
+    "release:site": "sh docs/site/release.sh",
+    "test:coverage": "open test/coverage/index.html"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "vant-cli commit-lint"
+    }
+  },
+  "lint-staged": {
+    "*.md": "prettier --write",
+    "*.{ts,tsx,js,vue,less}": "prettier --write",
+    "*.{ts,tsx,js,vue}": "eslint --fix",
+    "*.{vue,css,less}": "stylelint --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:youzan/vant.git"
+  },
+  "keywords": [
+    "ui",
+    "vue",
+    "frontend",
+    "mobile ui",
+    "component",
+    "components"
+  ],
+  "author": "youzanfe",
   "license": "MIT",
-  "devDependencies": {
-    "@mdi/font": "^4.5.95",
-    "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.10",
-    "@vue/test-utils": "1.0.0-beta.29",
-    "autoprefixer": "^9.6.1",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-detective": "^2.0.0",
-    "babel-plugin-module-resolver": "^3.2.0",
-    "babel-plugin-transform-define": "^1.3.1",
-    "sass-loader": "^10.0.2",
-    "style-loader": "^0.23.1",
-    "concurrently": "^4.1.1",
-    "cssnano": "^4.1.10",
-    "dotenv": "^8.0.0",
-    "eslint-plugin-jest": "^24.1.0",
-    "file-loader": "^4.1.0",
-    "fork-ts-checker-webpack-plugin": "^1.6.0",
-    "friendly-errors-webpack-plugin": "^1.7.0",
-    "happypack": "^5.0.1",
-    "identity-obj-proxy": "^3.0.0",
-    "jest-canvas-mock": "^2.3.0",
-    "mini-css-extract-plugin": "^0.8.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "postcss-loader": "^3.0.0",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.2",
-    "ts-loader": "^8.0.6",
-    "url-loader": "^2.1.0",
-    "vue-meta": "^2.4.0",
-    "html-webpack-plugin": "^5.3.1",
-    "webpack-dev-server": "^3.7.2"
+  "dependencies": {
+    "@babel/runtime": "7.x",
+    "@vant/icons": "1.4.0",
+    "@vant/popperjs": "^1.0.0",
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
+    "vue-lazyload": "1.2.3"
   },
   "peerDependencies": {
-    "vue": "^2.6.12"
+    "vue": ">= 2.5.22"
+  },
+  "devDependencies": {
+    "@genpage/cli": "^1.0.0",
+    "prettier": "^2.0.4",
+    "vue": "^2.6.12",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "sideEffects": [
+    "es/**/style/*",
+    "lib/**/style/*",
+    "*.css",
+    "*.less"
+  ],
+  "vetur": {
+    "tags": "vetur/tags.json",
+    "attributes": "vetur/attributes.json"
+  },
+  "web-types": "vetur/web-types.json",
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@vant"
+    ]
+  },
+  "stylelint": {
+    "extends": [
+      "@vant/stylelint-config"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "proseWrap": "never"
   },
   "browserslist": [
     "Android >= 4.0",
