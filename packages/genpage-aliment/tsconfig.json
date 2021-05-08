@@ -1,12 +1,23 @@
 {
-  "extends": "../../tsconfig.json",
-  "include": [
-    "src"
-  ],
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@*": ["src/*"]
-    }
-  }
+    "jsx": "preserve",
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "allowJs": true,
+    "noEmit": true,
+    "noImplicitThis": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "types/**/*",
+    "src/**/*",
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.spec.js",
+    "node_modules"
+  ]
 }

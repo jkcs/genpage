@@ -1,5 +1,5 @@
 import sass from 'sass';
-import FriendlyErrorsPlugin from '@nuxt/friendly-errors-webpack-plugin';
+import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
 import { join } from 'path';
 import { existsSync } from 'fs';
@@ -111,10 +111,10 @@ export const baseConfig: WebpackConfig = {
           },
         ],
       },
-      {
-        test: /\.md$/,
-        use: [CACHE_LOADER, 'vue-loader', '@vant/markdown-loader'],
-      },
+      // {
+      //   test: /\.md$/,
+      //   use: [CACHE_LOADER, 'vue-loader', '@vant/markdown-loader'],
+      // },
     ],
   },
   plugins,

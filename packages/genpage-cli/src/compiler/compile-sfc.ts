@@ -1,3 +1,4 @@
+// TODO fix it
 import * as compiler from 'vue-template-compiler';
 import * as compileUtils from '@vue/component-compiler-utils';
 import hash from 'hash-sum';

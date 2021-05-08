@@ -1,0 +1,8 @@
+{
+  "map": {
+    "lazyload": []
+  },
+  "sequence": [
+    "lazyload"
+  ]
+}

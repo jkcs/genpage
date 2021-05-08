@@ -1,2 +1,4 @@
-/tsc-temp/
-/dist/
+es
+lib
+dist
+node_modules

@@ -1,11 +1,11 @@
 {
-  "name": "@vant/cli",
-  "version": "2.6.2",
+  "name": "@genpage/cli",
+  "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "bin": {
-    "vant-cli": "./lib/index.js"
+    "genpage-cli": "./lib/index.js"
   },
   "engines": {
     "node": ">=10"
@@ -25,9 +25,9 @@
     "preset.js"
   ],
   "keywords": [
-    "vant"
+    "genpage"
   ],
-  "author": "chenjiahan",
+  "author": "lw",
   "license": "MIT",
   "peerDependencies": {
     "vue": "^2.5.22",
@@ -46,7 +46,6 @@
     "@babel/plugin-transform-runtime": "^7.10.1",
     "@babel/preset-env": "^7.10.1",
     "@babel/preset-typescript": "^7.10.1",
-    "@nuxt/friendly-errors-webpack-plugin": "^2.5.0",
     "@types/jest": "^25.2.3",
     "@types/webpack": "^4.41.13",
     "@types/webpack-dev-server": "^3.11.0",
@@ -75,6 +74,7 @@
     "eslint": "^6.8.0",
     "fast-glob": "^3.2.2",
     "fork-ts-checker-webpack-plugin": "^4.1.6",
+    "friendly-errors-webpack-plugin": "^1.7.0",
     "gh-pages": "^2.2.0",
     "hash-sum": "^2.0.0",
     "html-webpack-plugin": "4.3.0",
@@ -108,13 +108,13 @@
   "release-it": {
     "git": {
       "tag": false,
-      "commitMessage": "chore: release @vant/cli@${version}"
+      "commitMessage": "chore: release @genpage/cli@${version}"
     }
   },
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@vant"
+      "@genpage"
     ],
     "rules": {
       "global-require": 0,
