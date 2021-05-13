@@ -2,17 +2,18 @@ import Vue from 'vue';
 import PackageEntry from './package-entry';
 import './package-style';
 
-import Lazyload from 'D:/awork/workspace-tmp/genpage/packages/genpage-aliment/src/lazyload/demo/index.vue';
+
 
 Vue.use(PackageEntry);
 
-Lazyload.name = 'demo-lazyload';
+
 
 export const demos = {
-  Lazyload
+  
 };
 export const config = {
   "name": "vant",
+  "entry": "./src/main.js",
   "build": {
     "skipInstall": [
       "lazyload"
@@ -60,17 +61,7 @@ export const config = {
           "indexName": "vant",
           "placeholder": "搜索文档..."
         },
-        "nav": [
-          {
-            "title": "展示组件",
-            "items": [
-              {
-                "path": "lazyload",
-                "title": "Lazyload 懒加载"
-              }
-            ]
-          }
-        ]
+        "nav": []
       },
       "en-US": {
         "title": "Vant",
@@ -92,17 +83,7 @@ export const config = {
           "indexName": "vant",
           "placeholder": "Search..."
         },
-        "nav": [
-          {
-            "title": "Display Components",
-            "items": [
-              {
-                "path": "lazyload",
-                "title": "Lazyload"
-              }
-            ]
-          }
-        ]
+        "nav": []
       }
     }
   }

@@ -1,10 +1,10 @@
-import Lazyload from 'D:/awork/workspace-tmp/genpage/packages/genpage-aliment/src/lazyload';
+import Router from 'D:/awork/workspace-tmp/genpage/packages/genpage-aliment/src/router';
 
 const version = '2.11.1';
 
 function install(Vue) {
   const components = [
-    
+    Router
   ];
 
   components.forEach(item => {
@@ -23,7 +23,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export {
   install,
   version,
-  Lazyload
+  Router
 };
 
 export default {

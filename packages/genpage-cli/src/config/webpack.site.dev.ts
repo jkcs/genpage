@@ -2,7 +2,7 @@ import merge from 'webpack-merge';
 import WebpackBar from 'webpackbar';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { get } from 'lodash';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { baseConfig } from './webpack.base';
 import { WebpackConfig } from '../common/types';
 import { getVantConfig, getWebpackConfig } from '../common';
@@ -40,38 +40,15 @@ export function getSiteDevBaseConfig(): WebpackConfig {
 
   const siteConfig = getSiteConfig();
   const title = getTitle(siteConfig);
-  console.log(join(__dirname, '../../index.html'))
   // return merge(baseConfig as any, {
-  return merge({
-    // entry: join(ROOT, entry),
-    // entry: entry,
-    // output: {
-    //   path: '/',
-    //   filename: '[name].js',
-    //   publicPath: '/'
-    // },
-    devServer: {
-      port: 8080,
-      quiet: true,
-      host: '0.0.0.0',
-      stats: 'errors-only',
-      publicPath: '/',
-      disableHostCheck: true,
-      contentBase: '/',
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        title,
-        // logo: siteConfig.logo,
-        // description: siteConfig.description,
-        inject: true,
-        template: join(__dirname, '../../index.html'),
-        filename: 'index.html'
-      })
-    ]
-  })
-  // return merge(baseConfig as any, {
-  //   entry: entry,
+  // return merge({
+  //   // entry: join(__dirname, '../../demo/main.js'),
+  //   // entry: entry,
+  //   // output: {
+  //   //   path: '/',
+  //   //   filename: '[name].js',
+  //   //   publicPath: '/'
+  //   // },
   //   devServer: {
   //     port: 8080,
   //     quiet: true,
@@ -79,54 +56,76 @@ export function getSiteDevBaseConfig(): WebpackConfig {
   //     stats: 'errors-only',
   //     publicPath: '/',
   //     disableHostCheck: true,
-  //   },
-  //   resolve: {
-  //     alias: {
-  //       'site-mobile-shared': SITE_MODILE_SHARED_FILE,
-  //       'site-desktop-shared': SITE_DESKTOP_SHARED_FILE,
-  //     },
-  //   },
-  //   output: {
-  //     chunkFilename: '[name].js',
-  //   },
-  //   optimization: {
-  //     splitChunks: {
-  //       cacheGroups: {
-  //         chunks: {
-  //           chunks: 'all',
-  //           minChunks: 2,
-  //           minSize: 0,
-  //           name: 'chunks',
-  //         },
-  //       },
-  //     },
+  //     contentBase: '/',
   //   },
   //   plugins: [
-  //     new WebpackBar({
-  //       name: 'Vant Cli',
-  //       color: GREEN,
-  //     }),
-  //     new VantCliSitePlugin(),
   //     new HtmlWebpackPlugin({
   //       title,
-  //       logo: siteConfig.logo,
-  //       description: siteConfig.description,
-  //       chunks: ['chunks', 'site-desktop'],
-  //       template: join(__dirname, '../../site/desktop/index.html'),
-  //       filename: 'index.html',
-  //       baiduAnalytics,
-  //     }),
-  //     new HtmlWebpackPlugin({
-  //       title,
-  //       logo: siteConfig.logo,
-  //       description: siteConfig.description,
-  //       chunks: ['chunks', 'site-mobile'],
-  //       template: join(__dirname, '../../site/mobile/index.html'),
-  //       filename: 'mobile.html',
-  //       baiduAnalytics,
-  //     }),
-  //   ],
-  // });
+  //       // logo: siteConfig.logo,
+  //       // description: siteConfig.description,
+  //       inject: true,
+  //       template: join(__dirname, '../../index.html'),
+  //       filename: 'index.html'
+  //     })
+  //   ]
+  // })
+  return merge(baseConfig as any, {
+    // entry: entry,
+    devServer: {
+      port: 8080,
+      quiet: true,
+      host: '0.0.0.0',
+      stats: 'errors-only',
+      publicPath: '/',
+      disableHostCheck: true,
+    },
+    // resolve: {
+    //   alias: {
+    //     'site-mobile-shared': SITE_MODILE_SHARED_FILE,
+    //     'site-desktop-shared': SITE_DESKTOP_SHARED_FILE,
+    //   },
+    // },
+    output: {
+      chunkFilename: '[name].js',
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          chunks: {
+            chunks: 'all',
+            minChunks: 2,
+            minSize: 0,
+            name: 'chunks',
+          },
+        },
+      },
+    },
+    plugins: [
+      new WebpackBar({
+        name: 'Genpage Cli',
+        color: GREEN,
+      }),
+      // new VantCliSitePlugin(),
+      new HtmlWebpackPlugin({
+        title,
+        // logo: siteConfig.logo,
+        // description: siteConfig.description,
+        chunks: ['chunks', 'site-desktop'],
+        template: join(__dirname, '../../index.html'),
+        filename: 'index.html'
+        // baiduAnalytics,
+      })
+      // new HtmlWebpackPlugin({
+      //   title,
+      //   logo: siteConfig.logo,
+      //   description: siteConfig.description,
+      //   chunks: ['chunks', 'site-mobile'],
+      //   template: join(__dirname, '../../site/mobile/index.html'),
+      //   filename: 'mobile.html',
+      //   baiduAnalytics,
+      // }),
+    ],
+  });
 }
 
 export function getSiteDevConfig(): WebpackConfig {

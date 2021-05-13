@@ -22,7 +22,9 @@ function logServerInfo(port) {
 }
 function runDevServer(port, config) {
     const server = new webpack_dev_server_1.default(webpack_1.default(config), config.devServer);
-    console.log(config)(server).showStatus = function () { };
+    // this is a hack to disable wds status log
+    server.showStatus = function () { };
+    // console.log(config)
     const host = lodash_1.get(config.devServer, 'host', 'localhost');
     server.listen(port, host, (err) => {
         if (err) {

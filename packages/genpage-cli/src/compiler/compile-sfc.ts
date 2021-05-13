@@ -1,13 +1,27 @@
 // TODO fix it
-import * as compiler from 'vue-template-compiler';
+// import * as compiler from 'vue-template-compiler';
+
 import * as compileUtils from '@vue/component-compiler-utils';
 import hash from 'hash-sum';
-import { parse } from 'path';
+import { parse, join, dirname, resolve } from 'path';
 import { remove, writeFileSync, readFileSync } from 'fs-extra';
 import { replaceExt } from '../common';
 import { compileJs } from './compile-js';
 import { compileStyle } from './compile-style';
+import { ROOT } from '../common/constant'
+const Module = require('module')
+const createRequire = Module.createRequire || Module.createRequireFromPath || function (filename: string) {
+  const mod = new Module(filename, null)
+  mod.filename = filename
+  mod.paths = Module._nodeModulePaths(dirname(filename))
 
+  mod._compile(`module.exports = require;`, filename)
+
+  return mod.exports
+}
+
+// const compiler = require(join(ROOT, './node_modules/vue-template-compiler'))
+const compiler = createRequire(resolve(ROOT, 'package.json'))('vue-template-compiler')
 const RENDER_FN = '__vue_render__';
 const STATIC_RENDER_FN = '__vue_staticRenderFns__';
 const EXPORT = 'export default {';

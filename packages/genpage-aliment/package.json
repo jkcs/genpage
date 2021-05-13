@@ -1,98 +1,28 @@
 {
-  "name": "vant",
-  "version": "2.11.1",
+  "name": "@genpage/aliment",
+  "version": "1.0.0",
   "description": "Mobile UI Components built on Vue",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "style": "lib/index.css",
   "typings": "types/index.d.ts",
-  "files": [
-    "es",
-    "lib",
-    "types",
-    "vetur"
-  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "bootstrap": "yarn || npm i",
-    "dev": "genpage-cli dev",
-    "lint": "vant-cli lint",
-    "test": "vant-cli test",
-    "build": "vant-cli build",
-    "release": "vant-cli release",
-    "test:watch": "vant-cli test --watch",
-    "release:site": "sh docs/site/release.sh",
-    "test:coverage": "open test/coverage/index.html"
+    "serve": "vue-cli-service genpage-serve",
+    "build": "vue-cli-service genpage-build"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "vant-cli commit-lint"
-    }
-  },
-  "lint-staged": {
-    "*.md": "prettier --write",
-    "*.{ts,tsx,js,vue,less}": "prettier --write",
-    "*.{ts,tsx,js,vue}": "eslint --fix",
-    "*.{vue,css,less}": "stylelint --fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:youzan/vant.git"
-  },
-  "keywords": [
-    "ui",
-    "vue",
-    "frontend",
-    "mobile ui",
-    "component",
-    "components"
-  ],
-  "author": "youzanfe",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "7.x",
-    "@vant/icons": "1.4.0",
-    "@vant/popperjs": "^1.0.0",
-    "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
-    "vue-lazyload": "1.2.3"
-  },
-  "peerDependencies": {
-    "vue": ">= 2.5.22"
   },
   "devDependencies": {
-    "@genpage/cli": "^1.0.0",
-    "prettier": "^2.0.4",
+    "@vue/cli-plugin-babel": "~4.2.0",
+    "@vue/cli-plugin-eslint": "~4.2.0",
+    "@vue/cli-plugin-router": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "eslint": "^6.7.2",
+    "@vue/eslint-config-standard": "^5.1.0",
     "vue": "^2.6.12",
-    "vue-template-compiler": "^2.6.12"
-  },
-  "sideEffects": [
-    "es/**/style/*",
-    "lib/**/style/*",
-    "*.css",
-    "*.less"
-  ],
-  "vetur": {
-    "tags": "vetur/tags.json",
-    "attributes": "vetur/attributes.json"
-  },
-  "web-types": "vetur/web-types.json",
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@vant"
-    ]
-  },
-  "stylelint": {
-    "extends": [
-      "@vant/stylelint-config"
-    ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "proseWrap": "never"
+    "vue-template-compiler": "^2.6.12",
+    "@genpage/vue-cli-plugin-genpage": "1.0.0"
   },
   "browserslist": [
     "Android >= 4.0",

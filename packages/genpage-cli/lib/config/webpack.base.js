@@ -4,15 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.baseConfig = void 0;
-const sass_1 = __importDefault(require("sass"));
 const friendly_errors_webpack_plugin_1 = __importDefault(require("friendly-errors-webpack-plugin"));
 const vue_loader_1 = require("vue-loader");
 const path_1 = require("path");
 const fs_1 = require("fs");
 const logger_1 = require("../common/logger");
 const constant_1 = require("../common/constant");
+const { loadModule } = require('../common/module');
+console.log(loadModule('vue-loader', path_1.join(__dirname, '../../')));
+console.log(path_1.join(__dirname, '../../node_modules/cache-loader'));
 const CACHE_LOADER = {
-    loader: 'cache-loader',
+    // loader: loadModule('cache-loader', join(__dirname, '../../')),
+    loader: path_1.join(__dirname, '../../node_modules/cache-loader'),
     options: {
         cacheDirectory: constant_1.CACHE_DIR,
     },
@@ -66,39 +69,13 @@ exports.baseConfig = {
                 use: [
                     CACHE_LOADER,
                     {
-                        loader: 'vue-loader',
+                        // loader: 'vue-loader',
+                        // loader: loadModule('vue-loader', join(__dirname, '../../')),
+                        loader: path_1.join(__dirname, '../../node_modules/vue-loader'),
                         options: {
                             compilerOptions: {
                                 preserveWhitespace: false,
                             },
-                        },
-                    },
-                ],
-            },
-            {
-                test: /\.(js|ts|jsx|tsx)$/,
-                exclude: /node_modules\/(?!(@vant\/cli))/,
-                use: [CACHE_LOADER, 'babel-loader'],
-            },
-            {
-                test: /\.css$/,
-                sideEffects: true,
-                use: CSS_LOADERS,
-            },
-            {
-                test: /\.less$/,
-                sideEffects: true,
-                use: [...CSS_LOADERS, 'less-loader'],
-            },
-            {
-                test: /\.scss$/,
-                sideEffects: true,
-                use: [
-                    ...CSS_LOADERS,
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            implementation: sass_1.default,
                         },
                     },
                 ],

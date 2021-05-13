@@ -12,8 +12,6 @@ import Quickstart_zh_CN from 'D:/awork/workspace-tmp/genpage/packages/genpage-al
 import StyleGuide_zh_CN from 'D:/awork/workspace-tmp/genpage/packages/genpage-aliment/docs/markdown/style-guide.zh-CN.md';
 import Theme_en_US from 'D:/awork/workspace-tmp/genpage/packages/genpage-aliment/docs/markdown/theme.en-US.md';
 import Theme_zh_CN from 'D:/awork/workspace-tmp/genpage/packages/genpage-aliment/docs/markdown/theme.zh-CN.md';
-import Lazyload_zh_CN from 'D:/awork/workspace-tmp/genpage/packages/genpage-aliment/src/lazyload/README.zh-CN.md';
-import Lazyload_en_US from 'D:/awork/workspace-tmp/genpage/packages/genpage-aliment/src/lazyload/README.md';
 
 export { config };
 export const documents = {
@@ -29,8 +27,6 @@ export const documents = {
   Quickstart_zh_CN,
   StyleGuide_zh_CN,
   Theme_en_US,
-  Theme_zh_CN,
-  Lazyload_zh_CN,
-  Lazyload_en_US
+  Theme_zh_CN
 };
 export const packageVersion = '2.11.1';

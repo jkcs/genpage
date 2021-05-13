@@ -1,4 +1,6 @@
 "use strict";
+// TODO fix it
+// import * as compiler from 'vue-template-compiler';
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -23,7 +25,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.compileSfc = exports.parseSfc = void 0;
-const compiler = __importStar(require("vue-template-compiler"));
 const compileUtils = __importStar(require("@vue/component-compiler-utils"));
 const hash_sum_1 = __importDefault(require("hash-sum"));
 const path_1 = require("path");
@@ -31,6 +32,17 @@ const fs_extra_1 = require("fs-extra");
 const common_1 = require("../common");
 const compile_js_1 = require("./compile-js");
 const compile_style_1 = require("./compile-style");
+const constant_1 = require("../common/constant");
+const Module = require('module');
+const createRequire = Module.createRequire || Module.createRequireFromPath || function (filename) {
+    const mod = new Module(filename, null);
+    mod.filename = filename;
+    mod.paths = Module._nodeModulePaths(path_1.dirname(filename));
+    mod._compile(`module.exports = require;`, filename);
+    return mod.exports;
+};
+// const compiler = require(join(ROOT, './node_modules/vue-template-compiler'))
+const compiler = createRequire(path_1.resolve(constant_1.ROOT, 'package.json'))('vue-template-compiler');
 const RENDER_FN = '__vue_render__';
 const STATIC_RENDER_FN = '__vue_staticRenderFns__';
 const EXPORT = 'export default {';

@@ -12,9 +12,13 @@ import {
   SCRIPT_EXTS,
   POSTCSS_CONFIG_FILE,
 } from '../common/constant';
+const { loadModule } = require('../common/module')
 
+console.log(loadModule('vue-loader', join(__dirname, '../../')))
+console.log(join(__dirname, '../../node_modules/cache-loader'))
 const CACHE_LOADER = {
-  loader: 'cache-loader',
+  // loader: loadModule('cache-loader', join(__dirname, '../../')),
+  loader: join(__dirname, '../../node_modules/cache-loader'),
   options: {
     cacheDirectory: CACHE_DIR,
   },
@@ -74,7 +78,9 @@ export const baseConfig: WebpackConfig = {
         use: [
           CACHE_LOADER,
           {
-            loader: 'vue-loader',
+            // loader: 'vue-loader',
+            // loader: loadModule('vue-loader', join(__dirname, '../../')),
+            loader:  join(__dirname, '../../node_modules/vue-loader'),
             options: {
               compilerOptions: {
                 preserveWhitespace: false,
@@ -83,34 +89,34 @@ export const baseConfig: WebpackConfig = {
           },
         ],
       },
-      {
-        test: /\.(js|ts|jsx|tsx)$/,
-        exclude: /node_modules\/(?!(@vant\/cli))/,
-        use: [CACHE_LOADER, 'babel-loader'],
-      },
-      {
-        test: /\.css$/,
-        sideEffects: true,
-        use: CSS_LOADERS,
-      },
-      {
-        test: /\.less$/,
-        sideEffects: true,
-        use: [...CSS_LOADERS, 'less-loader'],
-      },
-      {
-        test: /\.scss$/,
-        sideEffects: true,
-        use: [
-          ...CSS_LOADERS,
-          {
-            loader: 'sass-loader',
-            options: {
-              implementation: sass,
-            },
-          },
-        ],
-      },
+      // {
+      //   test: /\.(js|ts|jsx|tsx)$/,
+      //   exclude: /node_modules\/(?!(@vant\/cli))/,
+      //   use: [CACHE_LOADER, 'babel-loader'],
+      // },
+      // {
+      //   test: /\.css$/,
+      //   sideEffects: true,
+      //   use: CSS_LOADERS,
+      // },
+      // {
+      //   test: /\.less$/,
+      //   sideEffects: true,
+      //   use: [...CSS_LOADERS, 'less-loader'],
+      // },
+      // {
+      //   test: /\.scss$/,
+      //   sideEffects: true,
+      //   use: [
+      //     ...CSS_LOADERS,
+      //     {
+      //       loader: 'sass-loader',
+      //       options: {
+      //         implementation: sass,
+      //       },
+      //     },
+      //   ],
+      // },
       // {
       //   test: /\.md$/,
       //   use: [CACHE_LOADER, 'vue-loader', '@vant/markdown-loader'],
