@@ -7,22 +7,22 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "serve": "vue-cli-service genpage-serve",
+    "serve": "tsc --watch && vue-cli-service genpage-serve",
     "build": "vue-cli-service genpage-build"
   },
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@genpage/vue-cli-plugin-genpage": "1.0.0",
     "@vue/cli-plugin-babel": "~4.2.0",
     "@vue/cli-plugin-eslint": "~4.2.0",
     "@vue/cli-plugin-router": "~4.2.0",
+    "@vue/cli-plugin-typescript": "^4.5.13",
     "@vue/cli-service": "~4.2.0",
-    "eslint": "^6.7.2",
     "@vue/eslint-config-standard": "^5.1.0",
+    "eslint": "^6.7.2",
     "vue": "^2.6.12",
-    "vue-template-compiler": "^2.6.12",
-    "@genpage/vue-cli-plugin-genpage": "1.0.0"
+    "vue-template-compiler": "^2.6.12"
   },
   "browserslist": [
     "Android >= 4.0",

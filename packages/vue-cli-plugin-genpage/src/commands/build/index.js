@@ -23,7 +23,8 @@ module.exports = (api, options) => {
       '--minimize': 'Tell webpack to minimize the bundle using the TerserPlugin.',
       '--report': `generate report.html to help analyze bundle content`,
       '--report-json': 'generate report.json to help analyze bundle content',
-      '--source-map': 'generate source map to help analyze code'
+      '--source-map': 'generate source map to help analyze code',
+      '--lib': 'build lib project'
     }
   }, async (args) => {
     for (const key in defaults) {
@@ -56,7 +57,9 @@ module.exports = (api, options) => {
 function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
   // resolve raw webpack config
-  const webpackConfig = require('@vue/cli-service/lib/commands/build/resolveAppConfig')(api, args, options)
+  const webpackConfig = args.lib 
+    ? require('@vue/cli-service/lib/commands/build/resolveLibConfig')(api, args, options)
+    : require('@vue/cli-service/lib/commands/build/resolveAppConfig')(api, args, options)
 
   // check for common config errors
   validateWebpackConfig(webpackConfig, api, options, args.target)
