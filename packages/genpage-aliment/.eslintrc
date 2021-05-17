@@ -1,0 +1,10 @@
+{
+  "extends": ["@vue/standard"],
+  "sourceType": "module",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  }
+}
