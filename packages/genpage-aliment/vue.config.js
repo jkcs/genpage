@@ -1,8 +1,18 @@
+const path = require('path')
+
 module.exports = {
+  lintOnSave: false,
   pages: {
     index: {
-      entry: 'demo/main.js'
-      // chunks: ['chunk-vendors', 'chunk-common', 'index']
+      entry: 'demo/main'
+    }
+  },
+  configureWebpack: {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+        '@demo': path.resolve(__dirname, 'demo')
+      }
     }
   }
 }

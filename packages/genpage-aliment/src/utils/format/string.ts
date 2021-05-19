@@ -1,15 +1,22 @@
-const camelizeRE = /-(\w)/g;
+const camelizeRE = /-(\w)/g
+const lowerLineRE = /[A-Z]/g
 
 export function camelize(str: string): string {
-  return str.replace(camelizeRE, (_, c) => c.toUpperCase());
+  return str.replace(camelizeRE, (_, c) => c.toUpperCase())
 }
 
-export function padZero(num: number | string, targetLength = 2): string {
-  let str = num + '';
+export function lowerLine(str: string): string {
+  let s = str.replace(lowerLineRE, (_, c) => ('-' + _.toLowerCase()))
+  if (s.slice(0, 1) == '-') {
+    return s.slice(1)
+  }
+  return s
+}
 
+export function padStart(str: string, targetLength = 2, sym: (number | string) = 0): string {
   while (str.length < targetLength) {
-    str = '0' + str;
+    str = String(sym) + str
   }
 
-  return str;
+  return str
 }

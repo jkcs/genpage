@@ -6,10 +6,12 @@ module.exports = (api, options, rootOptions) => {
     return {
       scripts: {
         serve: 'vue-cli-service genpage-serve',
-        build: 'vue-cli-service genpage-build'
+        build: 'vue-cli-service genpage-build',
+        'test:unit': 'vue-cli-service test:unit',
+        lint: 'vue-cli-service lint'
       },
       devDependencies: {
-        jest: '^25.5.4'
+        '@genpage/vue-cli-plugin-genpage': "^1.0.0"
       },
       browserslist: [
         'Android >= 4',
