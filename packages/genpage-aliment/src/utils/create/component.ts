@@ -1,14 +1,18 @@
 /**
  * Create a basic component with common options
  */
+import { createBEM, isFunction } from '..'
 import Vue, {
   VNode,
+  VueConstructor,
   ComponentOptions,
-  RenderContext,
+  FunctionalComponentOptions,
+  RenderContext, CreateElement,
 } from 'vue'
-import { DefaultProps } from '../types'
+import { DefaultProps, FunctionComponent } from '../types'
 
-export interface GenComponentOptions<V extends Vue = Vue> extends ComponentOptions<V> {
+export interface GenComponentOptions extends ComponentOptions<Vue> {
+  name?: string;
   functional?: boolean;
 }
 
@@ -41,7 +45,6 @@ export function unifySlots(context: RenderContext) {
 }
 
 // should be removed after Vue 3
-/*
 function transformFunctionComponent(
   pure: FunctionComponent
 ): GenComponentOptions {
@@ -50,30 +53,13 @@ function transformFunctionComponent(
     functional: true,
     props: pure.props,
     model: pure.model,
-    render: (h, context): any =>
-      pure(context, context.props, unifySlots(context)),
-  }
-}
-*/
-
-export function createComponent(name: string) {
-  return function <Props = DefaultProps, Events = {}, Slots = {}>(
-    sfc: GenComponentOptions
-  ): TsxComponent<Props, Events, Slots> {
-    if (!sfc.functional) {
-      sfc.mixins = sfc.mixins || []
-      // sfc.mixins.push(SlotsMixin)
-    }
-
-    sfc.name = name
-    return sfc as TsxComponent<Props, Events, Slots>
+    render: (h: CreateElement, context: RenderContext): any =>
+      pure(context, context.props, context.scopedSlots, createBEM(pure.name), h)
   }
 }
 
-/*export function createFunctionComponent(name: string) {
-  return function <Props = DefaultProps, Events = {}, Slots = {}>(
-    sfc: FunctionComponent
-  ): TsxComponent<Props, Events, Slots> {
-    return transformFunctionComponent(sfc) as TsxComponent<Props, Events, Slots>
-  }
-}*/
+export function createFunctionComponent<Props = DefaultProps, Events = {}, Slots = {}>(
+  sfc: Function
+): GenComponentOptions {
+  return transformFunctionComponent(sfc as FunctionComponent)
+}

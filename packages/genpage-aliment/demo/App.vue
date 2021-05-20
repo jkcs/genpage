@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
 <!--    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>-->
     <gen-card ref="card" thumb="11111">
       测试
     </gen-card>
+    <gen-overlay :show="true">33333</gen-overlay>
     <button @click="getTest">测试</button>
   </div>
 </template>
