@@ -1,5 +1,4 @@
-import { VNode, CreateElement, RenderContext } from 'vue';
-import { InjectOptions, PropsDefinition } from 'vue/types/options';
+import { VNode } from 'vue';
 
 export type EventHandler = (event: Event) => void;
 
@@ -23,32 +22,3 @@ export type ModelOptions = {
 };
 
 export type DefaultProps = ObjectIndex;
-
-/*export type FunctionComponent<
-  Props = DefaultProps,
-  PropDefs = PropsDefinition<Props>
-  > = {
-  (
-    h: CreateElement,
-    props: Props,
-    slots: ScopedSlots,
-    context: RenderContext<Props>
-  ): VNode | undefined;
-  props?: PropDefs;
-  model?: ModelOptions;
-  inject?: InjectOptions;
-};*/
-
-export type FunctionComponent<
-  Props = DefaultProps,
-  PropDefs = PropsDefinition<Props>
-  > = {
-  (
-    context: RenderContext<Props>,
-    props: Props,
-    slots: ScopedSlots
-  ): VNode | undefined;
-  props?: PropDefs;
-  model?: ModelOptions;
-  inject?: InjectOptions;
-};

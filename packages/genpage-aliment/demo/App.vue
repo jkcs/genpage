@@ -2,7 +2,9 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
 <!--    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>-->
-    <gen-card ref="card" thumb="11111"></gen-card>
+    <gen-card ref="card" thumb="11111">
+      测试
+    </gen-card>
     <button @click="getTest">测试</button>
   </div>
 </template>
