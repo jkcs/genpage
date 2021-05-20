@@ -1,3 +1,5 @@
+import Constant from '../enum/Constant'
+
 const camelizeRE = /-(\w)/g
 const lowerLineRE = /[A-Z]/g
 
@@ -6,8 +8,8 @@ export function camelize(str: string): string {
 }
 
 export function lowerLine(str: string): string {
-  let s = str.replace(lowerLineRE, (_, c) => ('-' + _.toLowerCase()))
-  if (s.slice(0, 1) == '-') {
+  let s = str.replace(lowerLineRE, (_) => (Constant.SEPARATOR + _.toLowerCase()))
+  if (s.slice(0, 1) === Constant.SEPARATOR) {
     return s.slice(1)
   }
   return s

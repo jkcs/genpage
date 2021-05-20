@@ -1,56 +1,48 @@
 import { VueConstructor } from 'vue/types'
-import { createBEM, BEM } from './bem'
-import { createComponent } from './component'
+import { createBEM as buildBEM, BEM } from './bem'
 import { ComponentOptions, DirectiveOptions } from 'vue'
 import Vue from 'vue'
-import { lowerLine } from '@/utils'
+import { lowerLine } from '@/utils/format/string'
+import Constant from '@/utils/enum/Constant'
+import InstallType from '@/utils/enum/InstallType'
 
 export interface GenDirectiveOptions extends DirectiveOptions {
   name: string
 }
 
-type CreateNamespaceReturn = {
-  createComponent: ReturnType<typeof createComponent>,
-  createBEM: BEM
+const prefix = Constant.PREFIX
+
+export function getClassName(name: string): string {
+  return prefix + Constant.SEPARATOR + lowerLine(name)
 }
 
-enum InstallType {
-  component = 'component',
-  filter = 'filter',
-  directive = 'directive'
+export function getInstallName(name: string): string {
+  return prefix.slice(0, 1).toLocaleUpperCase() + prefix.slice(1, prefix.length) + name
 }
 
-export const prefix = 'gen-'
-
-export function getName(name: string): string {
-  return prefix + name
-}
-
-export function createNamespace(name: string): CreateNamespaceReturn {
-  name = getName(name)
-  return {
-    createComponent: createComponent(name),
-    createBEM: createBEM(name)
-  }
+export function createBEM(name: string): BEM {
+  name = lowerLine(name)
+  return buildBEM(getClassName(name))
 }
 
 export function injectInstall(
   options: ComponentOptions<Vue> | GenDirectiveOptions | Function,
-  installType: InstallType = InstallType.component
+  installType: InstallType = InstallType.COMPONENT
 ): { install: (Vue: VueConstructor) => void } {
   const { name } = options
+
   return {
     install: (Vue: VueConstructor) => {
       switch (installType) {
-        case InstallType.directive:
-          Vue.directive(getName(lowerLine(name as string)), options as DirectiveOptions)
+        case InstallType.DIRECTIVE:
+          Vue.directive(getInstallName(name as string), options as DirectiveOptions)
           break
-        case InstallType.filter:
-          Vue.filter(getName(lowerLine(name as string)), options as Function)
+        case InstallType.FILTER:
+          Vue.filter(getInstallName(name as string), options as Function)
           break
-        case InstallType.component:
+        case InstallType.COMPONENT:
         default:
-          Vue.component(getName(lowerLine(name as string)), options)
+          Vue.component(getInstallName(name as string), options)
       }
     }
   }

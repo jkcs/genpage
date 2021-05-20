@@ -1,8 +1,6 @@
 import Vue from 'vue'
 
-export { createNamespace } from './create'
-
-export { lowerLine } from './format/string'
+export { createBEM } from './create'
 
 export const inBrowser = typeof window !== 'undefined'
 export const isServer: boolean = Vue.prototype.$isServer
