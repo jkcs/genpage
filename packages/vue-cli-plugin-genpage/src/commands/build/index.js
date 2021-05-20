@@ -1,4 +1,5 @@
 const path = require('path')
+const { buildLib, buildComponent } = require('./lib')
 
 const defaults = {
   clean: true,
@@ -57,7 +58,7 @@ module.exports = (api, options) => {
 function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
   // resolve raw webpack config
-  const webpackConfig = args.lib 
+  const webpackConfig = args.lib
     ? require('@vue/cli-service/lib/commands/build/resolveLibConfig')(api, args, options)
     : require('@vue/cli-service/lib/commands/build/resolveAppConfig')(api, args, options)
 
@@ -141,8 +142,10 @@ async function build (args, api, options) {
     }
   }
 
-  return new Promise((resolve, reject) => {
-    webpack(webpackConfig, (err, stats) => {
+  return new Promise(async (resolve, reject) => {
+    await buildLib()
+    await buildComponent()
+    webpack(webpackConfig, async (err, stats) => {
       if (err) {
         return reject(err)
       }
