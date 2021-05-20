@@ -7,7 +7,7 @@ import GenComponent from '@/utils/model/GenComponent'
 export default class Card extends GenComponent {
   @Prop() private thumb?: string
 
-  private getThumb(): string {
+  getThumb(): string {
     return this.thumb || ''
   }
 
