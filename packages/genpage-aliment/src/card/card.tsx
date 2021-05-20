@@ -48,7 +48,6 @@ import { VNode } from 'vue'
 
 @Component
 export default class Card extends Vue {
-  name = 'card'
   @Prop() private thumb?: string
 
   private getThumb(): string {
