@@ -1,23 +1,28 @@
-import {
+const {
   readdirSync,
   lstatSync,
   existsSync,
   readFileSync,
   outputFileSync
-} from 'fs-extra'
-import { join } from 'path'
-import { SRC_DIR } from './constant'
-import { cached } from './index'
+} = require('fs-extra')
+const { join } = require('path')
+const { SRC_DIR } = require('./constant')
+const { cached } = require('./index')
 
-export function getFiles(dir = SRC_DIR) {
-  return cached(readdirSync)(dir)
+function getFiles(dir = SRC_DIR) {
+  // return cached(readdirSync)(dir)
+  return readdirSync(dir)
 }
 
-export function isDir(dir) {
+exports.getFiles = getFiles
+
+function isDir(dir) {
   return lstatSync(dir).isDirectory()
 }
 
-export async function getCompileDir(dir = SRC_DIR) {
+exports.isDir = isDir
+
+async function getCompileDir(dir = SRC_DIR) {
   const files = getFiles()
 
   await Promise.all(
@@ -33,7 +38,9 @@ export async function getCompileDir(dir = SRC_DIR) {
   )
 }
 
-export function smartOutputFile(filePath, content) {
+exports.getCompileDir = getCompileDir
+
+function smartOutputFile(filePath, content) {
   if (existsSync(filePath)) {
     const previousContent = readFileSync(filePath, 'utf-8')
 
@@ -45,11 +52,15 @@ export function smartOutputFile(filePath, content) {
   outputFileSync(filePath, content)
 }
 
-export function hasDefaultExport(code) {
+exports.smartOutputFile = smartOutputFile
+
+function hasDefaultExport(code) {
   return code.includes('export default') || code.includes('export { default }');
 }
 
-export function getComponents() {
+exports.hasDefaultExport = hasDefaultExport
+
+function getComponents() {
   const dirs = getFiles()
   return dirs
     .filter((dir) =>
@@ -63,3 +74,5 @@ export function getComponents() {
       })
     )
 }
+
+exports.getComponents = getComponents

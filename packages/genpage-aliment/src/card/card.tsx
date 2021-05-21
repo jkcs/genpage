@@ -1,6 +1,6 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { VNode } from 'vue'
-import GenComponent from '@/mixins/GenComponent'
+import GenComponent from '@/mixins/gen-component'
 
 
 @Component

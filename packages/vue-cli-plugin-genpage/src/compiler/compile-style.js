@@ -1,23 +1,23 @@
 const { join, parse, relative, sep } = require('path')
-import { readFileSync, writeFileSync } from 'fs'
-import { FileManager, render } from 'less'
-import { compileCss } from './compile-css'
-import { replaceExt } from '../util/build'
+const { readFileSync, writeFileSync } = require('fs-extra')
+const { FileManager, render } = require('less')
+const { compileCss } = require('./compile-css')
+const { replaceExt } = require('../util/build')
 
 class TildeResolver extends FileManager {
   loadFile(filename, ...args) {
-    filename = filename.replace('~', '');
-    return FileManager.prototype.loadFile.apply(this, [filename, ...args]);
+    filename = filename.replace('~', '')
+    return FileManager.prototype.loadFile.apply(this, [filename, ...args])
   }
 }
 
 const TildeResolverPlugin = {
   install(lessInstance, pluginManager) {
-    pluginManager.addFileManager(new TildeResolver());
-  },
+    pluginManager.addFileManager(new TildeResolver())
+  }
 }
 
-async function compileLess(filePath) {
+const compileLess = async (filePath) => {
   const source = readFileSync(filePath, 'utf-8')
   const { css } = await render(source, {
     filename: filePath,
@@ -26,8 +26,9 @@ async function compileLess(filePath) {
 
   return css
 }
+module.exports.compileLess = compileLess
 
-async function compileFile(filePath) {
+const compileFile = async (filePath) => {
   const parsedPath = parse(filePath)
 
   try {
@@ -39,12 +40,16 @@ async function compileFile(filePath) {
     const source = readFileSync(filePath, 'utf-8')
     return await compileCss(source)
   } catch (err) {
-    consola.error('Compile style failed: ' + filePath)
+    // consola.error('Compile style failed: ' + filePath)
+    console.log('Compile style failed: ' + filePath)
+    console.log(err)
     throw err
   }
 }
 
-export async function compileStyle(filePath) {
+module.exports.compileFile = compileFile
+
+module.exports.compileStyle = async (filePath) => {
   const css = await compileFile(filePath)
 
   writeFileSync(replaceExt(filePath, '.css'), css)

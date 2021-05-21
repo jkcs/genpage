@@ -1,7 +1,7 @@
-export * from './fs'
-export * from './constant'
+const fs = require('./fs')
+const constant = require('./constant')
 
-export function cached(fn) {
+function cached(fn) {
   const cache = Object.create(null)
   return (function cachedFn(str) {
     const hit = cache[str]
@@ -9,18 +9,30 @@ export function cached(fn) {
   })
 }
 
-export const EXT_REGEXP = /\.\w+$/
-export const SCRIPT_REGEXP = /\.(js|ts|jsx|tsx)$/
-export const STYLE_REGEXP = /\.(css|less|scss)$/
+const EXT_REGEXP = /\.\w+$/
+const SCRIPT_REGEXP = /\.(js|ts|jsx|tsx)$/
+const STYLE_REGEXP = /\.(css|less|scss)$/
 
-export function replaceExt(path, ext) {
+function replaceExt(path, ext) {
   return path.replace(EXT_REGEXP, ext)
 }
 
-export function isScript(path) {
+function isScript(path) {
   return SCRIPT_REGEXP.test(path)
 }
 
-export function isStyle(path) {
+function isStyle(path) {
   return STYLE_REGEXP.test(path)
+}
+
+module.exports = {
+  ...fs,
+  ...constant,
+  cached,
+  EXT_REGEXP,
+  SCRIPT_REGEXP,
+  STYLE_REGEXP,
+  replaceExt,
+  isScript,
+  isStyle
 }

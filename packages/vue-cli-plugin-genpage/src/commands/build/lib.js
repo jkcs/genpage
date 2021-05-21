@@ -1,10 +1,11 @@
-import { copy } from 'fs-extra'
-import { SRC_DIR, LIB_DIR } from '../../util/build/constant'
-import { compileStyle } from '../../compiler/compile-style'
-import { getFiles, isDir, isStyle } from '../../util/build'
-import { join } from 'path'
+const { emptyDirSync } = require('fs-extra')
+const { copy } = require('fs-extra')
+const { SRC_DIR, LIB_DIR } = require('../../util/build/constant')
+const { compileStyle } = require('../../compiler/compile-style')
+const { getFiles, isDir, isStyle } = require('../../util/build/index')
+const { join } = require('path')
 
-async function compileFile(filePath) {
+const compileFile = (filePath) => {
   /*if (isScript(filePath)) {
     return compileJs(filePath);
   }*/
@@ -16,13 +17,16 @@ async function compileFile(filePath) {
   // return remove(filePath);
 }
 
-async function compile() {
-  const files = getFiles(LIB_DIR)
+module.exports.compileFile = compileFile
 
+const compile = async (dir) => {
+  const files = getFiles(dir)
+  console.log(files)
   await Promise.all(
     files.map(filename => {
-      const filePath = join(LIB_DIR, filename)
+      const filePath = join(dir, filename)
 
+      console.log(filePath)
       if (isDir(filePath)) {
         return compile(filePath)
       }
@@ -31,11 +35,13 @@ async function compile() {
     })
   )
 }
+module.exports.compile = compile
 
-export async function buildLib() {
+module.exports.buildLib = async () => {
+  emptyDirSync(LIB_DIR)
   await copy(SRC_DIR, LIB_DIR)
 }
 
-export async function buildComponent() {
-  await compile()
+module.exports.buildComponent = async () => {
+  await compile(LIB_DIR)
 }
