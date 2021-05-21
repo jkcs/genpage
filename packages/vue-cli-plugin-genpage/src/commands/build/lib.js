@@ -1,9 +1,13 @@
+const { smartOutputFile } = require('../../util/build/fs')
 const { emptyDirSync } = require('fs-extra')
 const { copy } = require('fs-extra')
 const { SRC_DIR, LIB_DIR } = require('../../util/build/constant')
-const { compileStyle } = require('../../compiler/compile-style')
-const { getFiles, isDir, isStyle } = require('../../util/build/index')
+const { compileStyle, polymerizationStyle } = require('../../compiler/compile-style')
+const { isStyle, isNeedImportStyle } = require('../../util/build/index')
+const { getFiles, isDir } = require('../../util/build/fs')
 const { join } = require('path')
+
+const styles = polymerizationStyle()
 
 const compileFile = (filePath) => {
   /*if (isScript(filePath)) {
@@ -11,6 +15,9 @@ const compileFile = (filePath) => {
   }*/
 
   if (isStyle(filePath)) {
+    if (isNeedImportStyle(filePath)) {
+      styles(filePath)
+    }
     return compileStyle(filePath);
   }
 
@@ -22,8 +29,8 @@ module.exports.compileFile = compileFile
 const compile = async (dir) => {
   const files = getFiles(dir)
   console.log(files)
-  await Promise.all(
-    files.map(filename => {
+  const queue = files
+    .map(filename => {
       const filePath = join(dir, filename)
 
       console.log(filePath)
@@ -33,7 +40,18 @@ const compile = async (dir) => {
 
       return compileFile(filePath)
     })
+  const stylePath = join(LIB_DIR, 'index.less')
+  console.log(styles())
+  queue.push(
+    smartOutputFile(
+      join(LIB_DIR, 'index.less'),
+      styles().join('')
+    )
   )
+  queue.push(
+    compileFile(stylePath)
+  )
+  await Promise.all(queue)
 }
 module.exports.compile = compile
 

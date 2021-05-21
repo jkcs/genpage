@@ -2,7 +2,8 @@ const { join, parse, relative, sep } = require('path')
 const { readFileSync, writeFileSync } = require('fs-extra')
 const { FileManager, render } = require('less')
 const { compileCss } = require('./compile-css')
-const { replaceExt } = require('../util/build')
+const { replaceExt, isStyleDirStyle } = require('../util/build')
+const { LIB_DIR } = require('../util/build/constant')
 
 class TildeResolver extends FileManager {
   loadFile(filename, ...args) {
@@ -53,4 +54,23 @@ module.exports.compileStyle = async (filePath) => {
   const css = await compileFile(filePath)
 
   writeFileSync(replaceExt(filePath, '.css'), css)
+}
+
+module.exports.polymerizationStyle = () => {
+  const contentArr = []
+  return function(absolutePath) {
+    if (absolutePath) {
+      const reg = new RegExp('\\' + sep, 'g')
+      const relativePath = relative(LIB_DIR, absolutePath).replace(reg, '/')
+      const content = `@import '${relativePath}'; \n`
+
+      if (isStyleDirStyle(absolutePath)) {
+        contentArr.unshift(content)
+      } else {
+        contentArr.push(content)
+      }
+    }
+
+    return contentArr
+  }
 }
