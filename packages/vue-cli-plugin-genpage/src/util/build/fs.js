@@ -10,17 +10,13 @@ const { SRC_DIR } = require('./constant')
 const { cached } = require('./index')
 
 function getFiles(dir = SRC_DIR) {
-  // return cached(readdirSync)(dir)
-  return readdirSync(dir)
+  return cached(readdirSync)(dir)
+  // return readdirSync(dir)
 }
-
-exports.getFiles = getFiles
 
 function isDir(dir) {
   return lstatSync(dir).isDirectory()
 }
-
-exports.isDir = isDir
 
 async function getCompileDir(dir = SRC_DIR) {
   const files = getFiles()
@@ -38,8 +34,6 @@ async function getCompileDir(dir = SRC_DIR) {
   )
 }
 
-exports.getCompileDir = getCompileDir
-
 function smartOutputFile(filePath, content) {
   if (existsSync(filePath)) {
     const previousContent = readFileSync(filePath, 'utf-8')
@@ -52,13 +46,9 @@ function smartOutputFile(filePath, content) {
   outputFileSync(filePath, content)
 }
 
-exports.smartOutputFile = smartOutputFile
-
 function hasDefaultExport(code) {
   return code.includes('export default') || code.includes('export { default }');
 }
-
-exports.hasDefaultExport = hasDefaultExport
 
 function getComponents() {
   const dirs = getFiles()
@@ -75,4 +65,11 @@ function getComponents() {
     )
 }
 
-exports.getComponents = getComponents
+module.exports = {
+  getComponents,
+  getFiles,
+  isDir,
+  getCompileDir,
+  smartOutputFile,
+  hasDefaultExport
+}

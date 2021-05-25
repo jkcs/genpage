@@ -1,3 +1,4 @@
+const { sep } = require('path')
 const fs = require('./fs')
 const constant = require('./constant')
 
@@ -12,7 +13,7 @@ function cached(fn) {
 const EXT_REGEXP = /\.\w+$/
 const SCRIPT_REGEXP = /\.(js|ts|jsx|tsx)$/
 const STYLE_REGEXP = /\.(css|less|scss)$/
-const STYLE_DIR_REGEXP = /\/style\//
+const STYLE_DIR_REGEXP = new RegExp(`\\${sep}style\\${sep}`)
 const NEED_IMPORT_STYLE_REGEXP = /[^lib][^\w]index\.(css|less|scss)$/
 
 function replaceExt(path, ext) {

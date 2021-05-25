@@ -9,10 +9,12 @@ const STYLE_DIR = join(SRC_DIR, 'style')
 const CONFIG_DIR = join(__dirname, '../../config')
 const POSTCSS_CONFIG_FILE = join(CONFIG_DIR, 'postcss.config.js')
 
-exports.ROOT = ROOT
-exports.SRC_DIR = SRC_DIR
-exports.LIB_DIR = LIB_DIR
-exports.ENTRY_EXTS = ENTRY_EXTS
-exports.STYLE_DIR = STYLE_DIR
-exports.CONFIG_DIR = CONFIG_DIR
-exports.POSTCSS_CONFIG_FILE = POSTCSS_CONFIG_FILE
+module.exports = {
+	ROOT,
+	SRC_DIR,
+	LIB_DIR,
+	ENTRY_EXTS,
+	STYLE_DIR,
+	CONFIG_DIR,
+	POSTCSS_CONFIG_FILE
+}
