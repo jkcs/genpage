@@ -64,7 +64,6 @@ module.exports.polymerizationStyle = () => {
       const relativePath = relative(LIB_DIR, absolutePath).replace(reg, '/')
       const content = `@import '${relativePath}'; \n`
 
-      console.log(isStyleDirStyle(absolutePath), absolutePath);
       if (isStyleDirStyle(absolutePath)) {
         contentArr.unshift(content)
       } else {

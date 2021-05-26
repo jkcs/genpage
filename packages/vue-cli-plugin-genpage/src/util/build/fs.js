@@ -6,7 +6,7 @@ const {
   outputFileSync
 } = require('fs-extra')
 const { join } = require('path')
-const { SRC_DIR } = require('./constant')
+const { SRC_DIR, ENTRY_EXTS } = require('./constant')
 const { cached } = require('./index')
 
 function getFiles(dir = SRC_DIR) {
@@ -65,11 +65,35 @@ function getComponents() {
     )
 }
 
+function generateComponentEnter() {
+  const components = getComponents()
+  
+  const enters = components
+    .map(component => {
+      const enterPath = (ext) => {
+        return join(SRC_DIR, component, `${ext ? component : 'index'}.${ext || 'ts'}`)
+      }
+
+      const ext = ENTRY_EXTS.find(ext => existsSync(enterPath(ext)))
+
+      return {
+        [component]: enterPath(ext)
+      }
+    })
+    .reduce(
+      (obj, item) => Object.assign(obj, item),
+      {}
+    )
+
+  return enters
+}
+
 module.exports = {
   getComponents,
   getFiles,
   isDir,
   getCompileDir,
   smartOutputFile,
-  hasDefaultExport
+  hasDefaultExport,
+  generateComponentEnter
 }

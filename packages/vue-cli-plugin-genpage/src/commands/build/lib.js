@@ -3,12 +3,16 @@ const { emptyDirSync } = require('fs-extra')
 const { copy } = require('fs-extra')
 const { SRC_DIR, LIB_DIR } = require('../../util/build/constant')
 const { compileStyle, polymerizationStyle } = require('../../compiler/compile-style')
-const { isStyle, isNeedImportStyle } = require('../../util/build/index')
-const { getFiles, isDir } = require('../../util/build/fs')
+const { compileTs } = require('../../compiler/compile-ts')
+const { isStyle, isNeedImportStyle, isUtils } = require('../../util/build/index')
+const { getFiles, isDir, generateComponentEnter } = require('../../util/build/fs')
 const { join } = require('path')
 
 const styles = polymerizationStyle()
 
+/**
+ * just compile style
+ */
 const compileFile = (filePath) => {
   /*if (isScript(filePath)) {
     return compileJs(filePath);
@@ -21,19 +25,19 @@ const compileFile = (filePath) => {
     return compileStyle(filePath);
   }
 
+  if (isUtils(filePath)) {
+    return compileTs(filePath)
+  }
+
   // return remove(filePath);
 }
 
-module.exports.compileFile = compileFile
-
 const compile = async (dir) => {
   const files = getFiles(dir)
-  console.log(files)
   const queue = files
     .map(filename => {
       const filePath = join(dir, filename)
 
-      console.log(filePath)
       if (isDir(filePath)) {
         return compile(filePath)
       }
@@ -41,7 +45,7 @@ const compile = async (dir) => {
       return compileFile(filePath)
     })
   const stylePath = join(LIB_DIR, 'index.less')
-  console.log(styles())
+
   queue.push(
     smartOutputFile(
       join(LIB_DIR, 'index.less'),
@@ -53,13 +57,19 @@ const compile = async (dir) => {
   )
   await Promise.all(queue)
 }
-module.exports.compile = compile
 
-module.exports.buildLib = async () => {
+const buildLib = async () => {
   emptyDirSync(LIB_DIR)
   await copy(SRC_DIR, LIB_DIR)
 }
-
-module.exports.buildComponent = async () => {
+ 
+const buildComponent = async () => {
   await compile(LIB_DIR)
+}
+
+module.exports = {
+  compile,
+  buildLib,
+  compileFile,
+  buildComponent
 }

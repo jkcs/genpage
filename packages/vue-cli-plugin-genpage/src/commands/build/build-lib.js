@@ -1,5 +1,7 @@
 const path = require('path')
 const { buildLib, buildComponent } = require('./lib')
+const { getFiles, isDir, generateComponentEnter } = require('../../util/build/fs')
+const { LIB_DIR } = require('../../util/build')
 
 const defaults = {
   clean: true,
@@ -16,7 +18,7 @@ const modifyConfig = (config, fn) => {
 }
 
 module.exports = (api, options) => {
-  api.registerCommand('genpage-build', {
+  api.registerCommand('genpage-build-lib', {
     description: 'build for production',
     usage: 'vue-cli-service genpage-build [options]',
     options: {
@@ -58,10 +60,26 @@ function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
   // resolve raw webpack config
   const webpackConfig = require('@vue/cli-service/lib/commands/build/resolveAppConfig')(api, args, options)
+  webpackConfig.entry = generateComponentEnter()
+
 
   // check for common config errors
   validateWebpackConfig(webpackConfig, api, options, args.target)
 
+  webpackConfig.output = {
+    path: LIB_DIR,
+    filename: '[name]/[name].js',
+    chunkFilename: '[id].js',
+    libraryTarget: 'commonjs2'
+  }
+  webpackConfig.externals = { 
+    vue: 'vue',
+    'vue-class-component': 'vue-class-component',
+    'vue-property-decorator': 'vue-property-decorator',
+  }
+  webpackConfig.optimization = {
+    minimize: false
+  }
   if (args.watch) {
     modifyConfig(webpackConfig, config => {
       config.watch = true
@@ -140,6 +158,74 @@ async function build (args, api, options) {
   }
 
   return new Promise(async (resolve, reject) => {
+    await buildLib()
+    await buildComponent()
+    console.log(webpackConfig)
+
+    /* const webpackConfig2 = {
+      mode: 'production',
+      entry: generateComponentEnter(),
+      output: {
+        path: path.resolve(process.cwd(), './lib'),
+        publicPath: '/dist/',
+        filename: '[name]/[name].js',
+        chunkFilename: '[id].js',
+        libraryTarget: 'commonjs2'
+      },
+      resolve: {
+        extensions: ['.tsx', '.ts', '.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
+        alias: {
+          
+        },
+        modules: ['node_modules']
+      },
+      externals: {
+        vue: 'vue'
+      },
+      performance: {
+        hints: false
+      },
+      stats: 'none',
+      optimization: {
+        minimize: false
+      },
+      module: {
+        rules: [
+          {
+            test: /\.(jsx?|babel|es6)$/,
+            include: process.cwd(),
+            exclude:  /node_modules|utils\/popper\.js|utils\/date\.js/,
+            loader: 'babel-loader'
+          },
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader',
+            options: {
+              compilerOptions: {
+                preserveWhitespace: false
+              }
+            }
+          },
+          {
+            test: /\.css$/,
+            loaders: ['style-loader', 'css-loader']
+          },
+          {
+            test: /\.(svg|otf|ttf|woff2?|eot|gif|png|jpe?g)(\?\S*)?$/,
+            loader: 'url-loader',
+            query: {
+              limit: 10000,
+              name: path.posix.join('static', '[name].[hash:7].[ext]')
+            }
+          }
+        ]
+      },
+      plugins: [
+        // new ProgressBarPlugin(),
+        new VueLoaderPlugin()
+      ]
+    } */
+
     webpack(webpackConfig, async (err, stats) => {
       if (err) {
         return reject(err)

@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service genpage-serve",
     "build": "vue-cli-service genpage-build",
+    "build:lib": "vue-cli-service genpage-build-lib",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
