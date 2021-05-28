@@ -1,5 +1,5 @@
-import Vue, { RenderContext, VNodeData } from 'vue';
-import { ObjectIndex } from './types';
+import Vue, { RenderContext, VNodeData } from 'vue'
+import { ObjectIndex } from './types'
 
 type Context = RenderContext & { data: VNodeData & ObjectIndex };
 
@@ -15,9 +15,9 @@ const inheritKey = [
   'directives',
   'staticClass',
   'staticStyle',
-];
+]
 
-const mapInheritKey: ObjectIndex = { nativeOn: 'on' };
+const mapInheritKey: ObjectIndex = { nativeOn: 'on' }
 
 // inherit partial context, map nativeOn to on
 export function inherit(
@@ -26,29 +26,29 @@ export function inherit(
 ): InheritContext {
   const result = inheritKey.reduce((obj, key) => {
     if (context.data[key]) {
-      obj[mapInheritKey[key] || key] = context.data[key];
+      obj[mapInheritKey[key] || key] = context.data[key]
     }
-    return obj;
-  }, {} as InheritContext);
+    return obj
+  }, {} as InheritContext)
 
   if (inheritListeners) {
-    result.on = result.on || {};
-    Object.assign(result.on, context.data.on);
+    result.on = result.on || {}
+    Object.assign(result.on, context.data.on)
   }
 
-  return result;
+  return result
 }
 
 // emit event
 export function emit(context: Context, eventName: string, ...args: any[]) {
-  const listeners = context.listeners[eventName];
+  const listeners = context.listeners[eventName]
   if (listeners) {
     if (Array.isArray(listeners)) {
       listeners.forEach((listener) => {
-        listener(...args);
-      });
+        listener(...args)
+      })
     } else {
-      listeners(...args);
+      listeners(...args)
     }
   }
 }
@@ -62,11 +62,11 @@ export function mount(Component: any, data?: VNodeData) {
       return h(Component, {
         props: this.$props,
         ...data,
-      });
+      })
     },
-  });
+  })
 
-  document.body.appendChild(instance.$el);
+  document.body.appendChild(instance.$el)
 
-  return instance;
+  return instance
 }

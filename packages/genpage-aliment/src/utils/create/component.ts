@@ -1,7 +1,7 @@
 /**
  * Create a basic component with common options
  */
-import { createBEM, isFunction } from '..'
+import { createBEM } from '..'
 import Vue, {
   VNode,
   VueConstructor,

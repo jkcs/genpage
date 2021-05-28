@@ -1,5 +1,5 @@
 import { ComponentOptions, VNode } from 'vue'
-import { BEM } from '@/utils/create/bem'
+import { BEM } from './create/bem'
 
 export type EventHandler = (event: Event) => void;
 

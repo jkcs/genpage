@@ -2,9 +2,9 @@ import { VueConstructor } from 'vue/types'
 import { createBEM as buildBEM, BEM } from './bem'
 import { ComponentOptions, DirectiveOptions } from 'vue'
 import Vue from 'vue'
-import { lowerLine } from '@/utils/format/string'
-import Constant from '@/utils/enum/Constant'
-import InstallType from '@/utils/enum/InstallType'
+import { lowerLine } from '../format/string'
+import Constant from '../enum/Constant'
+import InstallType from '../enum/InstallType'
 
 export interface GenDirectiveOptions extends DirectiveOptions {
   name: string
