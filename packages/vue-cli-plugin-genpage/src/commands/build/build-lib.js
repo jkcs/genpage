@@ -51,19 +51,11 @@ module.exports = (api, options) => {
         .use(require('webpackbar'), [{ name: 'Genpage' }])
 
       webpackConfig
-        .plugins.delete('html-index')
-
-      webpackConfig
-        .plugins.delete('preload-index')
-
-      webpackConfig
-        .plugins.delete('prefetch-index')
-
-      webpackConfig
-        .plugins.delete('copy')
-
-      webpackConfig
         .plugins
+        .delete('html-index')
+        .delete('preload-index')
+        .delete('prefetch-index')
+        .delete('copy')
         .delete('define')
         .delete('case-sensitive-paths')
         .delete('extract-css')
@@ -71,8 +63,7 @@ module.exports = (api, options) => {
         .delete('hash-module-ids')
         .delete('named-chunks')
 
-      console.log(Object.keys(webpackConfig
-        .plugins.entries()))
+      console.log(Object.keys(webpackConfig.plugins.entries()))
     })
 
     await build(args, api, options)

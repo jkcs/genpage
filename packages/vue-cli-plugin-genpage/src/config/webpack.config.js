@@ -9,18 +9,17 @@ const mixinsList = fs.readdirSync(path.resolve(SRC_DIR, './mixins'))
 const externals = {}
 
 Object.keys(components).forEach(function (key) {
-  externals[`@/${key}`] = `genpage-aliment/lib/${key}`
+  externals[`@/${key}`] = `@genpage/aliment/lib/${key}`
 })
 
 utilsList.forEach(function (file) {
-  file = path.basename(file, '.ts')
-  externals[`@/utils/${file}`] = `genpage-aliment/lib/utils/${file}`
+  file = path.basename(file, path.extname(file))
+  externals[`@/utils/${file}`] = `@genpage/aliment/lib/utils/${file}`
 })
 
 mixinsList.forEach(function (file) {
-  file = path.basename(file, '.js')
-  file = path.basename(file, '.ts')
-  externals[`@/mixins/${file}`] = `genpage-aliment/lib/mixins/${file}`
+  file = path.basename(file, path.extname(file))
+  externals[`@/mixins/${file}`] = `@genpage/aliment/lib/mixins/${file}`
 })
 
 module.exports = {

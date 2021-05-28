@@ -12,7 +12,6 @@ module.exports = {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
-        'genpage-aliment': path.resolve(__dirname, 'src'),
         '@demo': path.resolve(__dirname, 'demo')
       }
     }
