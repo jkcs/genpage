@@ -2,6 +2,7 @@ const path = require('path')
 
 module.exports = {
   lintOnSave: false,
+  outputDir: './lib',
   pages: {
     index: {
       entry: 'demo/main'

@@ -48,6 +48,21 @@ module.exports = (api, options) => {
       webpackConfig
         .plugin('webpackbar')
         .use(require('webpackbar'), [{ name: 'Genpage' }])
+
+      webpackConfig
+        .plugins.delete('html-index')
+
+      webpackConfig
+        .plugins.delete('preload-index')
+
+      webpackConfig
+        .plugins.delete('prefetch-index')
+
+      webpackConfig
+        .plugins.delete('copy')
+
+      console.log(Object.keys(webpackConfig
+        .plugins.entries()))
     })
 
     await build(args, api, options)
@@ -59,7 +74,8 @@ module.exports = (api, options) => {
 function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
   // resolve raw webpack config
-  const webpackConfig = require('@vue/cli-service/lib/commands/build/resolveAppConfig')(api, args, options)
+  // const webpackConfig = require('@vue/cli-service/lib/commands/build/resolveAppConfig')(api, args, options)
+  const webpackConfig = api.resolveWebpackConfig()
   webpackConfig.entry = generateComponentEnter()
 
 
@@ -72,7 +88,7 @@ function getWebpackConfig (api, args, options) {
     chunkFilename: '[id].js',
     libraryTarget: 'commonjs2'
   }
-  webpackConfig.externals = { 
+  webpackConfig.externals = {
     vue: 'vue',
     'vue-class-component': 'vue-class-component',
     'vue-property-decorator': 'vue-property-decorator',
@@ -175,7 +191,7 @@ async function build (args, api, options) {
       resolve: {
         extensions: ['.tsx', '.ts', '.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
         alias: {
-          
+
         },
         modules: ['node_modules']
       },
