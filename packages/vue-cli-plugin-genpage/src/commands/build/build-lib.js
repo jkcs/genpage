@@ -63,6 +63,10 @@ module.exports = (api, options) => {
         .delete('hash-module-ids')
         .delete('named-chunks')
 
+      webpackConfig
+        .plugin('polymerization-components')
+        .use(require('../../webpack/PolymerizationComponentsPlugin'))
+
       console.log(Object.keys(webpackConfig.plugins.entries()))
     })
 
