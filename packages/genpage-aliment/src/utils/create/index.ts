@@ -30,9 +30,9 @@ export function injectInstall(
   installType: InstallType = InstallType.COMPONENT
 ): { install: (Vue: VueConstructor) => void } {
   const { name } = options
-  console.log(name)
 
   return {
+    ...options,
     install: (Vue: VueConstructor) => {
       switch (installType) {
         case InstallType.DIRECTIVE:

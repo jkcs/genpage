@@ -67,11 +67,11 @@ function getComponents() {
 
 function generateComponentEnter() {
   const components = getComponents()
-  
-  const enters = components
+
+  return components
     .map(component => {
       const enterPath = (ext) => {
-        return join(SRC_DIR, component, `${ext ? component : 'index'}.${ext || 'ts'}`)
+        return join(SRC_DIR, component, `index.${ext || 'ts'}`)
       }
 
       const ext = ENTRY_EXTS.find(ext => existsSync(enterPath(ext)))
@@ -84,8 +84,6 @@ function generateComponentEnter() {
       (obj, item) => Object.assign(obj, item),
       {}
     )
-
-  return enters
 }
 
 module.exports = {

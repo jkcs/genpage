@@ -4,7 +4,7 @@ const { copy } = require('fs-extra')
 const { SRC_DIR, LIB_DIR } = require('../../util/build/constant')
 const { compileStyle, polymerizationStyle } = require('../../compiler/compile-style')
 const { compileTs } = require('../../compiler/compile-ts')
-const { isStyle, isNeedImportStyle, isUtils } = require('../../util/build/index')
+const { isStyle, isNeedImportStyle, isUtils, isMixins } = require('../../util/build/index')
 const { getFiles, isDir, generateComponentEnter } = require('../../util/build/fs')
 const { join } = require('path')
 
@@ -25,7 +25,7 @@ const compileFile = (filePath) => {
     return compileStyle(filePath);
   }
 
-  if (isUtils(filePath)) {
+  if (isUtils(filePath) || isMixins(filePath)) {
     return compileTs(filePath)
   }
 
@@ -62,7 +62,7 @@ const buildLib = async () => {
   emptyDirSync(LIB_DIR)
   await copy(SRC_DIR, LIB_DIR)
 }
- 
+
 const buildComponent = async () => {
   await compile(LIB_DIR)
 }

@@ -2,6 +2,7 @@ const path = require('path')
 const { buildLib, buildComponent } = require('./lib')
 const { getFiles, isDir, generateComponentEnter } = require('../../util/build/fs')
 const { LIB_DIR } = require('../../util/build')
+const customWebpack = require('../../config/webpack.config')
 
 const defaults = {
   clean: true,
@@ -61,6 +62,15 @@ module.exports = (api, options) => {
       webpackConfig
         .plugins.delete('copy')
 
+      webpackConfig
+        .plugins
+        .delete('define')
+        .delete('case-sensitive-paths')
+        .delete('extract-css')
+        .delete('optimize-css')
+        .delete('hash-module-ids')
+        .delete('named-chunks')
+
       console.log(Object.keys(webpackConfig
         .plugins.entries()))
     })
@@ -75,20 +85,24 @@ function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
   // resolve raw webpack config
   // const webpackConfig = require('@vue/cli-service/lib/commands/build/resolveAppConfig')(api, args, options)
-  const webpackConfig = api.resolveWebpackConfig()
+  const webpackConfig = Object.assign(api.resolveWebpackConfig(), customWebpack)
   webpackConfig.entry = generateComponentEnter()
 
 
   // check for common config errors
   validateWebpackConfig(webpackConfig, api, options, args.target)
 
+
+
   webpackConfig.output = {
     path: LIB_DIR,
-    filename: '[name]/[name].js',
+    filename: '[name]/index.js',
     chunkFilename: '[id].js',
     libraryTarget: 'commonjs2'
   }
+
   webpackConfig.externals = {
+    ...webpackConfig.externals,
     vue: 'vue',
     'vue-class-component': 'vue-class-component',
     'vue-property-decorator': 'vue-property-decorator',
@@ -96,6 +110,7 @@ function getWebpackConfig (api, args, options) {
   webpackConfig.optimization = {
     minimize: false
   }
+
   if (args.watch) {
     modifyConfig(webpackConfig, config => {
       config.watch = true

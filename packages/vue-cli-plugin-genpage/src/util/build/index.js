@@ -14,6 +14,7 @@ const EXT_REGEXP = /\.\w+$/
 const SCRIPT_REGEXP = /\.(js|ts|jsx|tsx)$/
 const STYLE_REGEXP = /\.(css|less|scss)$/
 const UTILS_REGEXP = new RegExp(`\\${sep}utils\\${sep}.+\.ts`)
+const MIXINS_REGEXP = new RegExp(`\\${sep}mixins\\${sep}.+\.ts`)
 const STYLE_DIR_REGEXP = new RegExp(`\\${sep}style\\${sep}`)
 const NEED_IMPORT_STYLE_REGEXP = /[^lib][^\w]index\.(css|less|scss)$/
 
@@ -27,6 +28,10 @@ function isScript(path) {
 
 function isUtils(path) {
   return UTILS_REGEXP.test(path)
+}
+
+function isMixins(path) {
+  return MIXINS_REGEXP.test(path)
 }
 
 function isStyle(path) {
@@ -53,5 +58,6 @@ module.exports = {
   isStyle,
   isUtils,
   isNeedImportStyle,
-  isStyleDirStyle
+  isStyleDirStyle,
+  isMixins
 }
