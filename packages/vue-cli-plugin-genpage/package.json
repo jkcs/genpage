@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "genpage": "./bin/index.js"
+  },
   "scripts": {
     "dev": "tsc --watch",
     "release": "tsc & release-it"
