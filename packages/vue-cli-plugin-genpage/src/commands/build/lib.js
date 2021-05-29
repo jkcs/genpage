@@ -1,12 +1,13 @@
 const { smartOutputFile } = require('../../util/build/fs')
 const { emptyDirSync } = require('fs-extra')
 const { copy } = require('fs-extra')
-const { SRC_DIR, LIB_DIR } = require('../../util/build/constant')
+const { SRC_DIR, LIB_DIR, ENTRY } = require('../../util/build/constant')
 const { compileStyle, polymerizationStyle } = require('../../compiler/compile-style')
 const { compileTs } = require('../../compiler/compile-ts')
 const { isStyle, isNeedImportStyle, isUtils, isMixins } = require('../../util/build/index')
 const { getFiles, isDir, generateComponentEnter } = require('../../util/build/fs')
 const { join } = require('path')
+const buildAllComponentsJs = require('../../compiler/build-all-component-js')
 
 const styles = polymerizationStyle()
 
@@ -65,6 +66,9 @@ const buildLib = async () => {
 
 const buildComponent = async () => {
   await compile(LIB_DIR)
+
+  smartOutputFile(ENTRY, buildAllComponentsJs())
+  // await build()
 }
 
 module.exports = {

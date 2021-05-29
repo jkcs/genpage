@@ -1,7 +1,7 @@
 const path = require('path')
 const { buildLib, buildComponent } = require('./lib')
 const { getFiles, isDir, generateComponentEnter } = require('../../util/build/fs')
-const { LIB_DIR } = require('../../util/build')
+const { LIB_DIR, ENTRY } = require('../../util/build')
 const customWebpack = require('../../config/webpack.config')
 
 const defaults = {
@@ -63,9 +63,9 @@ module.exports = (api, options) => {
         .delete('hash-module-ids')
         .delete('named-chunks')
 
-      webpackConfig
-        .plugin('polymerization-components')
-        .use(require('../../webpack/PolymerizationComponentsPlugin'))
+      // webpackConfig
+      //   .plugin('polymerization-components')
+      //   .use(require('../../webpack/PolymerizationComponentsPlugin'))
 
       console.log(Object.keys(webpackConfig.plugins.entries()))
     })
@@ -82,7 +82,7 @@ function getWebpackConfig (api, args, options) {
   // const webpackConfig = require('@vue/cli-service/lib/commands/build/resolveAppConfig')(api, args, options)
   const webpackConfig = Object.assign(api.resolveWebpackConfig(), customWebpack)
   webpackConfig.entry = generateComponentEnter()
-
+  webpackConfig.entry.index = ENTRY
 
   // check for common config errors
   validateWebpackConfig(webpackConfig, api, options, args.target)
@@ -91,7 +91,7 @@ function getWebpackConfig (api, args, options) {
 
   webpackConfig.output = {
     path: LIB_DIR,
-    filename: '[name]/index.js',
+    filename: (pathData) => pathData.chunk.name === 'index' ? '[name].js' : '[name]/index.js',
     chunkFilename: '[id].js',
     libraryTarget: 'commonjs2'
   }
