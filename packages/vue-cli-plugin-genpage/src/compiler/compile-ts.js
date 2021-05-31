@@ -1,4 +1,5 @@
 const { smartOutputFile } = require('../util/build/fs')
+const { replaceExt } = require('../util/build')
 const ts = require('typescript')
 const fs = require('fs-extra')
 
@@ -15,5 +16,5 @@ module.exports.compileTs = async function (filePath) {
     }
   )
 
-  smartOutputFile(filePath.replace('.ts', '.js'), jsCode)
+  smartOutputFile(replaceExt(filePath, '.js'), jsCode)
 }

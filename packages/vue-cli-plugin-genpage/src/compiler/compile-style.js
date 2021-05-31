@@ -1,4 +1,4 @@
-const { join, parse, relative, sep } = require('path')
+const { parse, relative, sep } = require('path')
 const { readFileSync, writeFileSync } = require('fs-extra')
 const { FileManager, render } = require('less')
 const { compileCss } = require('./compile-css')
@@ -27,7 +27,6 @@ const compileLess = async (filePath) => {
 
   return css
 }
-module.exports.compileLess = compileLess
 
 const compileFile = async (filePath) => {
   const parsedPath = parse(filePath)
@@ -48,15 +47,14 @@ const compileFile = async (filePath) => {
   }
 }
 
-module.exports.compileFile = compileFile
 
-module.exports.compileStyle = async (filePath) => {
+const compileStyle = async (filePath) => {
   const css = await compileFile(filePath)
 
   writeFileSync(replaceExt(filePath, '.css'), css)
 }
 
-module.exports.polymerizationStyle = () => {
+const polymerizationStyle = () => {
   const contentArr = []
   return function(absolutePath) {
     if (absolutePath) {
@@ -73,4 +71,11 @@ module.exports.polymerizationStyle = () => {
 
     return contentArr
   }
+}
+
+module.exports = {
+  compileLess,
+  compileFile,
+  compileStyle,
+  polymerizationStyle
 }

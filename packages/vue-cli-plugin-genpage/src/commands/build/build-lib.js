@@ -1,13 +1,6 @@
-const path = require('path')
 const { buildLib, buildComponent } = require('./lib')
 const { WEBPACK_CONFIG_FILE } = require('../../util/build/constant')
 const customWebpack = require(WEBPACK_CONFIG_FILE)
-
-const defaults = {
-  clean: true,
-  target: 'app',
-  'unsafe-inline': true
-}
 
 const modifyConfig = (config, fn) => {
   if (Array.isArray(config)) {
@@ -22,17 +15,9 @@ module.exports = (api, options) => {
     description: 'build for production',
     usage: 'vue-cli-service genpage-build [options]',
     options: {
-      '--watch': 'watch for changes',
       '--umd <umdEntryName>': 'build umd release umd entry name default index'
     }
   }, async (args) => {
-    for (const key in defaults) {
-      if (args[key] == null) {
-        args[key] = defaults[key]
-      }
-    }
-    args.entry = args.entry || args._[0]
-
     process.env.NODE_ENV = 'production'
     process.env.VUE_CLI_BUILD_TARGET = args.target
 
@@ -80,29 +65,26 @@ function getWebpackConfig (api, args, options) {
   // check for common config errors
   validateWebpackConfig(webpackConfig, api, options, 'lib')
 
-  if (args.watch) {
-    modifyConfig(webpackConfig, config => {
-      config.watch = true
-    })
-  }
-
   if (args.umd) {
     const entryName = typeof args.umd === 'string'
       ? args.umd
       : 'index'
     const entryNameMin = `${entryName}.min`
     const TerserWebpackPlugin = require('terser-webpack-plugin')
+
     modifyConfig(webpackConfig, config => {
       const entry = config.entry.index
       config.entry = {
         [entryName]: entry,
         [entryNameMin]: entry
       }
+
       config.output = {
         ...config.output,
         filename: '[name].js',
         libraryTarget: 'umd'
       }
+
       config.optimization = {
         minimize: true,
         minimizer: [
@@ -118,8 +100,6 @@ function getWebpackConfig (api, args, options) {
 }
 
 async function build (args, api, options) {
-  const fs = require('fs-extra')
-  const chalk = require('chalk')
   const webpack = require('webpack')
 
   const {
@@ -131,20 +111,9 @@ async function build (args, api, options) {
 
   log()
 
-  const targetDir = api.resolve(options.outputDir)
-
   const webpackConfig = getWebpackConfig(api, args, options)
 
-  if (process.env.NODE_ENV === 'production') {
-    try {
-      fs.emptyDirSync(path.resolve(api.service.context, targetDir))
-    } catch (e) {
-      console.warn(e)
-    }
-  }
-
   return new Promise(async (resolve, reject) => {
-    await buildLib()
     await buildComponent()
     console.log(webpackConfig)
 
@@ -158,18 +127,7 @@ async function build (args, api, options) {
         return reject('Build failed with errors.')
       }
 
-      const targetDirShort = path.relative(
-        api.service.context,
-        targetDir
-      )
-
-      if (!args.watch) {
-        const dirMsg = `The ${chalk.cyan(targetDirShort)} directory is ready to be deployed.`
-        done(`Build complete. ${dirMsg}`)
-      } else {
-        const dirMsg = `The ${chalk.cyan(targetDirShort)} directory is ready. `
-        done(`Build complete. ${dirMsg}Watching for changes...`)
-      }
+      done(`Build complete. `)
 
       resolve()
     })

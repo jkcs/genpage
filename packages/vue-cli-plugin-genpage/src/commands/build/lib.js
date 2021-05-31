@@ -54,12 +54,9 @@ const compile = async (dir) => {
   await Promise.all(queue)
 }
 
-const buildLib = async () => {
+const buildComponent = async () => {
   emptyDirSync(LIB_DIR)
   await copy(SRC_DIR, LIB_DIR)
-}
-
-const buildComponent = async () => {
   await compile(LIB_DIR)
 
   smartOutputFile(ENTRY, buildAllComponentsJs())
@@ -67,7 +64,6 @@ const buildComponent = async () => {
 
 module.exports = {
   compile,
-  buildLib,
   compileFile,
   buildComponent
 }
