@@ -9,20 +9,19 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import HelloWorld from './components/HelloWorld.vue'
-import Card from '@/card/Card'
+<script>
+import Card from '@/card'
+import HelloWorld from './components/HelloWorld'
 
-@Component({
-  components: {
-    HelloWorld
-  }
-})
-export default class App extends Vue {
-    getTest() {
-        console.log(this.$refs.card)
-        console.log((this.$refs.card as Card).getThumb())
+export default {
+    components: {
+      HelloWorld
+    },
+    methods: {
+      getTest() {
+          console.log(this.$refs.card)
+          console.log((this.$refs.card as Card).getThumb())
+      }
     }
 }
 </script>

@@ -11,14 +11,7 @@ const buildAllComponentsJs = require('../../compiler/build-all-component-js')
 
 const styles = polymerizationStyle()
 
-/**
- * just compile style
- */
 const compileFile = (filePath) => {
-  /*if (isScript(filePath)) {
-    return compileJs(filePath);
-  }*/
-
   if (isStyle(filePath)) {
     if (isNeedImportStyle(filePath)) {
       styles(filePath)
@@ -30,6 +23,7 @@ const compileFile = (filePath) => {
     return compileTs(filePath)
   }
 
+  // Keep the source code
   // return remove(filePath);
 }
 

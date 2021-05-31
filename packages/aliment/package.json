@@ -6,15 +6,13 @@
     "serve": "vue-cli-service genpage-serve",
     "build": "vue-cli-service genpage-build",
     "build:lib": "vue-cli-service genpage-build-lib",
+    "build:umd": "vue-cli-service genpage-build-lib --umd genpage.aliment",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "component": "genpage component"
   },
-  "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11",
-    "vue-class-component": "^7.2.3",
-    "vue-property-decorator": "^9.1.2"
+  "peesDependencies": {
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@genpage/vue-cli-plugin-genpage": "file:../vue-cli-plugin-genpage",

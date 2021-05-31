@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Card from '@/card/Card'
+import Card from '@/card'
 import { getClassName } from '@/utils/create'
 
 describe('Card', () => {

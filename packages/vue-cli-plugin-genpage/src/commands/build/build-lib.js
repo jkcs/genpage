@@ -1,7 +1,6 @@
 const path = require('path')
 const { buildLib, buildComponent } = require('./lib')
-const { generateComponentEnter } = require('../../util/build/fs')
-const { LIB_DIR, ENTRY, WEBPACK_CONFIG_FILE } = require('../../util/build/constant')
+const { WEBPACK_CONFIG_FILE } = require('../../util/build/constant')
 const customWebpack = require(WEBPACK_CONFIG_FILE)
 
 const defaults = {
@@ -24,10 +23,7 @@ module.exports = (api, options) => {
     usage: 'vue-cli-service genpage-build [options]',
     options: {
       '--watch': 'watch for changes',
-      '--minimize': 'Tell webpack to minimize the bundle using the TerserPlugin.',
-      '--report': `generate report.html to help analyze bundle content`,
-      '--report-json': 'generate report.json to help analyze bundle content',
-      '--source-map': 'generate source map to help analyze code'
+      '--umd <umdEntryName>': 'build umd release umd entry name default index'
     }
   }, async (args) => {
     for (const key in defaults) {
@@ -77,33 +73,12 @@ module.exports = (api, options) => {
 
 function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
-  // resolve raw webpack config
-  // const webpackConfig = require('@vue/cli-service/lib/commands/build/resolveAppConfig')(api, args, options)
   const webpackConfig = Object.assign(api.resolveWebpackConfig(), customWebpack)
-  webpackConfig.entry = generateComponentEnter()
-  webpackConfig.entry.index = ENTRY
 
+  // No modification allowed
+  options.outputDir = customWebpack.output.path
   // check for common config errors
-  validateWebpackConfig(webpackConfig, api, options, args.target)
-
-
-
-  webpackConfig.output = {
-    path: LIB_DIR,
-    filename: (pathData) => pathData.chunk.name === 'index' ? '[name].js' : '[name]/index.js',
-    chunkFilename: '[id].js',
-    libraryTarget: 'commonjs2'
-  }
-
-  webpackConfig.externals = {
-    ...webpackConfig.externals,
-    vue: 'vue',
-    'vue-class-component': 'vue-class-component',
-    'vue-property-decorator': 'vue-property-decorator',
-  }
-  webpackConfig.optimization = {
-    minimize: false
-  }
+  validateWebpackConfig(webpackConfig, api, options, 'lib')
 
   if (args.watch) {
     modifyConfig(webpackConfig, config => {
@@ -111,48 +86,35 @@ function getWebpackConfig (api, args, options) {
     })
   }
 
-  if (args.report || args['report-json']) {
-    const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+  console.log(args)
+  if (args.umd) {
+    const entryName = typeof args.umd === 'string'
+      ? args.umd
+      : 'index'
+    const entryNameMin = `${entryName}.min`
+    const TerserWebpackPlugin = require('terser-webpack-plugin')
     modifyConfig(webpackConfig, config => {
-      const bundleName = args.target !== 'app'
-        ? config.output.filename.replace(/\.js$/, '-')
-        : ''
-      config.plugins.push(new BundleAnalyzerPlugin({
-        logLevel: 'warn',
-        openAnalyzer: false,
-        analyzerMode: args.report ? 'static' : 'disabled',
-        reportFilename: `${bundleName}report.html`,
-        statsFilename: `${bundleName}report.json`,
-        generateStatsFile: !!args['report-json']
-      }))
-    })
-  }
-
-  // Expose advanced stats
-  if (args.dashboard) {
-    const DashboardPlugin = require('../../webpack/DashboardPlugin')
-    modifyConfig(webpackConfig, config => {
-      config.plugins.push(new DashboardPlugin({
-        type: 'build',
-        moduleBuild: args.moduleBuild,
-        keepAlive: args.keepAlive
-      }))
-    })
-  }
-
-  if (args.minimize && process.env.NODE_ENV !== 'production') {
-    modifyConfig(webpackConfig, config => {
-      config.optimization.minimize = true
-      config.optimization.namedModules = false
-    })
-  } else {
-    modifyConfig(webpackConfig, config => {
-      if (!config.optimization) {
-        config.optimization = {}
+      const entry = config.entry.index
+      config.entry = {
+        [entryName]: entry,
+        [entryNameMin]: entry
       }
-      config.optimization.namedModules = false
+      config.output = {
+        ...config.output,
+        filename: '[name].js',
+        libraryTarget: 'umd'
+      }
+      config.optimization = {
+        minimize: true,
+        minimizer: [
+          new TerserWebpackPlugin({
+            include: /min/
+          })
+        ]
+      }
     })
   }
+
   return webpackConfig
 }
 
@@ -216,5 +178,5 @@ async function build (args, api, options) {
 }
 
 module.exports.defaultModes = {
-  'uni-build': process.env.NODE_ENV
+  build: process.env.NODE_ENV
 }
