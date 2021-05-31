@@ -17,22 +17,6 @@ function isDir(dir) {
   return lstatSync(dir).isDirectory()
 }
 
-async function getCompileDir(dir = SRC_DIR) {
-  const files = getFiles()
-
-  await Promise.all(
-    files.map(filename => {
-      const filePath = join(dir, filename)
-
-      if (isDir(filePath)) {
-        return getCompileDir(filePath)
-      }
-
-      return getCompileDir(filePath)
-    })
-  )
-}
-
 function smartOutputFile(filePath, content) {
   if (existsSync(filePath)) {
     const previousContent = readFileSync(filePath, 'utf-8')
@@ -64,7 +48,7 @@ function getComponents() {
     )
 }
 
-function generateComponentEnter() {
+function generateComponentEntry() {
   const components = getComponents()
 
   return components
@@ -89,8 +73,7 @@ module.exports = {
   getComponents,
   getFiles,
   isDir,
-  getCompileDir,
   smartOutputFile,
   hasDefaultExport,
-  generateComponentEnter
+  generateComponentEntry
 }

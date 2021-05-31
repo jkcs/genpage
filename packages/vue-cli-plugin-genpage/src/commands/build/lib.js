@@ -5,7 +5,7 @@ const { SRC_DIR, LIB_DIR, ENTRY } = require('../../util/build/constant')
 const { compileStyle, polymerizationStyle } = require('../../compiler/compile-style')
 const { compileTs } = require('../../compiler/compile-ts')
 const { isStyle, isNeedImportStyle, isUtils, isMixins } = require('../../util/build/index')
-const { getFiles, isDir, generateComponentEnter } = require('../../util/build/fs')
+const { getFiles, isDir } = require('../../util/build/fs')
 const { join } = require('path')
 const buildAllComponentsJs = require('../../compiler/build-all-component-js')
 

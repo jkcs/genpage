@@ -1,10 +1,10 @@
 const { SRC_DIR } = require('../util/build/constant')
-const { generateComponentEnter } = require('../util/build/fs')
+const { generateComponentEntry } = require('../util/build/fs')
 const fs = require('fs')
 const path = require('path')
 const { ENTRY, LIB_DIR } = require('../util/build/constant')
 
-const components = generateComponentEnter()
+const components = generateComponentEntry()
 const utilsList = fs.readdirSync(path.resolve(SRC_DIR, './utils'))
 const mixinsList = fs.readdirSync(path.resolve(SRC_DIR, './mixins'))
 const externals = {

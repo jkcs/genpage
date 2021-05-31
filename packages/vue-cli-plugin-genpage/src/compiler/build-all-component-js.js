@@ -1,7 +1,7 @@
-const { generateComponentEnter } = require('../util/build/fs')
+const { generateComponentEntry } = require('../util/build/fs')
 
 function buildAllComponentsJs() {
-  const components = generateComponentEnter()
+  const components = generateComponentEntry()
   const CRLF = '\r\n'
   let importComponents = []
   let constComponents = []
