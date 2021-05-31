@@ -86,7 +86,6 @@ function getWebpackConfig (api, args, options) {
     })
   }
 
-  console.log(args)
   if (args.umd) {
     const entryName = typeof args.umd === 'string'
       ? args.umd
