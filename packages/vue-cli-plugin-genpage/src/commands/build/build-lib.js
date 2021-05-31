@@ -1,8 +1,8 @@
 const path = require('path')
 const { buildLib, buildComponent } = require('./lib')
-const { getFiles, isDir, generateComponentEnter } = require('../../util/build/fs')
-const { LIB_DIR, ENTRY } = require('../../util/build')
-const customWebpack = require('../../config/webpack.config')
+const { generateComponentEnter } = require('../../util/build/fs')
+const { LIB_DIR, ENTRY, WEBPACK_CONFIG_FILE } = require('../../util/build/constant')
+const customWebpack = require(WEBPACK_CONFIG_FILE)
 
 const defaults = {
   clean: true,
@@ -63,11 +63,10 @@ module.exports = (api, options) => {
         .delete('hash-module-ids')
         .delete('named-chunks')
 
+      // Polymerization plugin was be replaced by entry
       // webpackConfig
       //   .plugin('polymerization-components')
       //   .use(require('../../webpack/PolymerizationComponentsPlugin'))
-
-      console.log(Object.keys(webpackConfig.plugins.entries()))
     })
 
     await build(args, api, options)
@@ -187,70 +186,6 @@ async function build (args, api, options) {
     await buildLib()
     await buildComponent()
     console.log(webpackConfig)
-
-    /* const webpackConfig2 = {
-      mode: 'production',
-      entry: generateComponentEnter(),
-      output: {
-        path: path.resolve(process.cwd(), './lib'),
-        publicPath: '/dist/',
-        filename: '[name]/[name].js',
-        chunkFilename: '[id].js',
-        libraryTarget: 'commonjs2'
-      },
-      resolve: {
-        extensions: ['.tsx', '.ts', '.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
-        alias: {
-
-        },
-        modules: ['node_modules']
-      },
-      externals: {
-        vue: 'vue'
-      },
-      performance: {
-        hints: false
-      },
-      stats: 'none',
-      optimization: {
-        minimize: false
-      },
-      module: {
-        rules: [
-          {
-            test: /\.(jsx?|babel|es6)$/,
-            include: process.cwd(),
-            exclude:  /node_modules|utils\/popper\.js|utils\/date\.js/,
-            loader: 'babel-loader'
-          },
-          {
-            test: /\.vue$/,
-            loader: 'vue-loader',
-            options: {
-              compilerOptions: {
-                preserveWhitespace: false
-              }
-            }
-          },
-          {
-            test: /\.css$/,
-            loaders: ['style-loader', 'css-loader']
-          },
-          {
-            test: /\.(svg|otf|ttf|woff2?|eot|gif|png|jpe?g)(\?\S*)?$/,
-            loader: 'url-loader',
-            query: {
-              limit: 10000,
-              name: path.posix.join('static', '[name].[hash:7].[ext]')
-            }
-          }
-        ]
-      },
-      plugins: [
-        // new ProgressBarPlugin(),
-        new VueLoaderPlugin()
-      ]
-    } */
 
     webpack(webpackConfig, async (err, stats) => {
       if (err) {

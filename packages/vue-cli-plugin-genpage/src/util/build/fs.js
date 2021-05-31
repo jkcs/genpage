@@ -11,7 +11,6 @@ const { cached } = require('./index')
 
 function getFiles(dir = SRC_DIR) {
   return cached(readdirSync)(dir)
-  // return readdirSync(dir)
 }
 
 function isDir(dir) {

@@ -45,6 +45,7 @@ const compile = async (dir) => {
 
       return compileFile(filePath)
     })
+
   const stylePath = join(LIB_DIR, 'index.less')
 
   queue.push(
@@ -68,7 +69,6 @@ const buildComponent = async () => {
   await compile(LIB_DIR)
 
   smartOutputFile(ENTRY, buildAllComponentsJs())
-  // await build()
 }
 
 module.exports = {

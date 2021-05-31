@@ -7,7 +7,7 @@ module.exports.compileTs = async function (filePath) {
   const jsCode = ts.transpile(
     String(tsCode),
     {
-      target: ts.ScriptTarget.ES2015,
+      target: ts.ScriptTarget.ES5,
       module: 'commonjs',
       jsx: ts.JsxEmit.Preserve,
       noLib: false,
