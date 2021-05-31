@@ -2,8 +2,7 @@ const { generateComponentEnter } = require('../util/build/fs')
 
 function buildAllComponentsJs() {
   const components = generateComponentEnter()
-  console.log(components)
-  const CRLF = '\n\r'
+  const CRLF = '\r\n'
   let importComponents = []
   let constComponents = []
   let vueUse = []
@@ -13,9 +12,11 @@ function buildAllComponentsJs() {
     constComponents.push(`  ${component}`)
     vueUse.push(`   vue.use(${component})`)
   })
+
   importComponents = importComponents.join(CRLF)
   constComponents = constComponents.join(',' + CRLF)
   vueUse = vueUse.join(CRLF)
+
   return`
 ${importComponents}
 
