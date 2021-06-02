@@ -1,5 +1,5 @@
 const injectBuildCommand = require('./src/commands/build')
-const injectBuildLibCommand = require('./src/commands/build/build-lib')
+const injectBuildLibCommand = require('./src/commands/build/lib')
 const injectServeCommand = require('./src/commands/serve')
 
 module.exports = (api, options) => {
