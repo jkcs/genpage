@@ -5,7 +5,7 @@ const props = {
 export default {
   props,
 
-  render() {
+  render () {
     return (
       <div>
         { this.thumb }

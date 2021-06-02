@@ -44,13 +44,13 @@ export const popupMixinProps = {
   }
 }
 
-export function PopupMixin(options = {}) {
+export function PopupMixin (options = {}) {
   return {
     mixins: [
       TouchMixin,
       CloseOnPopstateMixin,
       PortalMixin({
-        afterPortal() {
+        afterPortal () {
           if (this.overlay) {
             updateOverlay()
           }
@@ -60,20 +60,20 @@ export function PopupMixin(options = {}) {
 
     props: popupMixinProps,
 
-    data() {
+    data () {
       return {
         inited: this.value
       }
     },
 
     computed: {
-      shouldRender() {
+      shouldRender () {
         return this.inited || !this.lazyRender
       }
     },
 
     watch: {
-      value(val) {
+      value (val) {
         const type = val ? 'open' : 'close'
         this.inited = this.inited || this.value
         this[type]()
@@ -86,21 +86,21 @@ export function PopupMixin(options = {}) {
       overlay: 'renderOverlay'
     },
 
-    mounted() {
+    mounted () {
       if (this.value) {
         this.open()
       }
     },
 
     /* istanbul ignore next */
-    activated() {
+    activated () {
       if (this.shouldReopen) {
         this.$emit('input', true)
         this.shouldReopen = false
       }
     },
 
-    beforeDestroy() {
+    beforeDestroy () {
       removeOverlay(this)
 
       if (this.opened) {
@@ -113,7 +113,7 @@ export function PopupMixin(options = {}) {
     },
 
     /* istanbul ignore next */
-    deactivated() {
+    deactivated () {
       if (this.value) {
         this.close()
         this.shouldReopen = true
@@ -121,7 +121,7 @@ export function PopupMixin(options = {}) {
     },
 
     methods: {
-      open() {
+      open () {
         /* istanbul ignore next */
         if (this.$isServer || this.opened) {
           return
@@ -137,7 +137,7 @@ export function PopupMixin(options = {}) {
         this.addLock()
       },
 
-      addLock() {
+      addLock () {
         if (this.lockScroll) {
           on(document, 'touchstart', this.touchStart)
           on(document, 'touchmove', this.onTouchMove)
@@ -149,7 +149,7 @@ export function PopupMixin(options = {}) {
         }
       },
 
-      removeLock() {
+      removeLock () {
         if (this.lockScroll && context.lockCount) {
           context.lockCount--
           off(document, 'touchstart', this.touchStart)
@@ -161,7 +161,7 @@ export function PopupMixin(options = {}) {
         }
       },
 
-      close() {
+      close () {
         if (!this.opened) {
           return
         }
@@ -172,7 +172,7 @@ export function PopupMixin(options = {}) {
         this.$emit('input', false)
       },
 
-      onTouchMove(event) {
+      onTouchMove (event) {
         this.touchMove(event)
         const direction = this.deltaY > 0 ? '10' : '01'
         const el = getScroller(event.target, this.$el)
@@ -196,7 +196,7 @@ export function PopupMixin(options = {}) {
         }
       },
 
-      renderOverlay() {
+      renderOverlay () {
         if (this.$isServer || !this.value) {
           return
         }
@@ -217,7 +217,7 @@ export function PopupMixin(options = {}) {
         })
       },
 
-      updateZIndex(value = 0) {
+      updateZIndex (value = 0) {
         this.$el.style.zIndex = ++context.zIndex + value
       }
     }

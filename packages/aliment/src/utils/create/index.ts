@@ -1,7 +1,7 @@
 import { VueConstructor } from 'vue/types'
 import { createBEM as buildBEM, BEM } from './bem'
-import { ComponentOptions, DirectiveOptions } from 'vue'
-import Vue from 'vue'
+import Vue, { ComponentOptions, DirectiveOptions } from 'vue'
+
 import { lowerLine } from '../format/string'
 import Constant from '../enum/Constant'
 import InstallType from '../enum/InstallType'
@@ -12,20 +12,20 @@ export interface GenDirectiveOptions extends DirectiveOptions {
 
 const prefix = Constant.PREFIX
 
-export function getClassName(name: string): string {
+export function getClassName (name: string): string {
   return prefix + Constant.SEPARATOR + lowerLine(name)
 }
 
-export function getInstallName(name: string): string {
+export function getInstallName (name: string): string {
   return prefix.slice(0, 1).toLocaleUpperCase() + prefix.slice(1, prefix.length) + name
 }
 
-export function createBEM(name: string): BEM {
+export function createBEM (name: string): BEM {
   name = lowerLine(name)
   return buildBEM(getClassName(name))
 }
 
-export function injectInstall(
+export function injectInstall (
   options: ComponentOptions<Vue> | GenDirectiveOptions | Function,
   installType: InstallType = InstallType.COMPONENT
 ): { install: (Vue: VueConstructor) => void } {

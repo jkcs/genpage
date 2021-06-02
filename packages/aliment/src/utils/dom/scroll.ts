@@ -1,14 +1,14 @@
 type ScrollElement = HTMLElement | Window;
 
-function isWindow(val: unknown): val is Window {
-  return val === window;
+function isWindow (val: unknown): val is Window {
+  return val === window
 }
 
 // get nearest scroll element
 // https://github.com/youzan/vant/issues/3823
-const overflowScrollReg = /scroll|auto/i;
-export function getScroller(el: HTMLElement, root: ScrollElement = window) {
-  let node = el;
+const overflowScrollReg = /scroll|auto/i
+export function getScroller (el: HTMLElement, root: ScrollElement = window) {
+  let node = el
 
   while (
     node &&
@@ -17,65 +17,65 @@ export function getScroller(el: HTMLElement, root: ScrollElement = window) {
     node.nodeType === 1 &&
     node !== root
   ) {
-    const { overflowY } = window.getComputedStyle(node);
+    const { overflowY } = window.getComputedStyle(node)
     if (overflowScrollReg.test(overflowY)) {
-      return node;
+      return node
     }
-    node = node.parentNode as HTMLElement;
+    node = node.parentNode as HTMLElement
   }
 
-  return root;
+  return root
 }
 
-export function getScrollTop(el: ScrollElement): number {
-  const top = 'scrollTop' in el ? el.scrollTop : el.pageYOffset;
+export function getScrollTop (el: ScrollElement): number {
+  const top = 'scrollTop' in el ? el.scrollTop : el.pageYOffset
 
   // iOS scroll bounce cause minus scrollTop
-  return Math.max(top, 0);
+  return Math.max(top, 0)
 }
 
-export function setScrollTop(el: ScrollElement, value: number) {
+export function setScrollTop (el: ScrollElement, value: number) {
   if ('scrollTop' in el) {
-    el.scrollTop = value;
+    el.scrollTop = value
   } else {
-    el.scrollTo(el.scrollX, value);
+    el.scrollTo(el.scrollX, value)
   }
 }
 
-export function getRootScrollTop(): number {
+export function getRootScrollTop (): number {
   return (
     window.pageYOffset ||
     document.documentElement.scrollTop ||
     document.body.scrollTop ||
     0
-  );
+  )
 }
 
-export function setRootScrollTop(value: number) {
-  setScrollTop(window, value);
-  setScrollTop(document.body, value);
+export function setRootScrollTop (value: number) {
+  setScrollTop(window, value)
+  setScrollTop(document.body, value)
 }
 
 // get distance from element top to page top or scroller top
-export function getElementTop(el: ScrollElement, scroller?: HTMLElement) {
+export function getElementTop (el: ScrollElement, scroller?: HTMLElement) {
   if (isWindow(el)) {
-    return 0;
+    return 0
   }
 
-  const scrollTop = scroller ? getScrollTop(scroller) : getRootScrollTop();
-  return el.getBoundingClientRect().top + scrollTop;
+  const scrollTop = scroller ? getScrollTop(scroller) : getRootScrollTop()
+  return el.getBoundingClientRect().top + scrollTop
 }
 
-export function getVisibleHeight(el: ScrollElement) {
+export function getVisibleHeight (el: ScrollElement) {
   if (isWindow(el)) {
-    return el.innerHeight;
+    return el.innerHeight
   }
-  return el.getBoundingClientRect().height;
+  return el.getBoundingClientRect().height
 }
 
-export function getVisibleTop(el: ScrollElement) {
+export function getVisibleTop (el: ScrollElement) {
   if (isWindow(el)) {
-    return 0;
+    return 0
   }
-  return el.getBoundingClientRect().top;
+  return el.getBoundingClientRect().top
 }

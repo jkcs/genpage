@@ -5,7 +5,7 @@ export default {
   components: {
     card
   },
-  render(): VNode {
+  render (): VNode {
     return (
       <div>
         11111111111111

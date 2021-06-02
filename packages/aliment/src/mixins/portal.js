@@ -1,4 +1,4 @@
-function getElement(selector) {
+function getElement (selector) {
   if (typeof selector === 'string') {
     return document.querySelector(selector)
   }
@@ -6,7 +6,7 @@ function getElement(selector) {
   return selector()
 }
 
-export function PortalMixin({ ref, afterPortal } = {}) {
+export function PortalMixin ({ ref, afterPortal } = {}) {
   return {
     props: {
       getContainer: [String, Function]
@@ -16,14 +16,14 @@ export function PortalMixin({ ref, afterPortal } = {}) {
       getContainer: 'portal'
     },
 
-    mounted() {
+    mounted () {
       if (this.getContainer) {
         this.portal()
       }
     },
 
     methods: {
-      portal() {
+      portal () {
         const { getContainer } = this
         const el = ref ? this.$refs[ref] : this.$el
 

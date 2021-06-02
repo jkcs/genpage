@@ -11,14 +11,14 @@ export type OverlayConfig = {
 
 const defaultConfig: OverlayConfig = {
   className: '',
-  customStyle: {},
+  customStyle: {}
 }
 
-function mountOverlay(vm: any) {
+function mountOverlay (vm: any) {
   return mount(Overlay, {
     on: {
       // close popup when overlay clicked & closeOnClickOverlay is true
-      click() {
+      click () {
         vm.$emit('click-overlay')
 
         if (vm.closeOnClickOverlay) {
@@ -28,12 +28,12 @@ function mountOverlay(vm: any) {
             vm.close()
           }
         }
-      },
-    },
+      }
+    }
   })
 }
 
-export function updateOverlay(vm?: any): void {
+export function updateOverlay (vm?: any): void {
   const item = context.find(vm)
 
   if (item) {
@@ -50,7 +50,7 @@ export function updateOverlay(vm?: any): void {
   }
 }
 
-export function openOverlay(vm: any, config: OverlayConfig): void {
+export function openOverlay (vm: any, config: OverlayConfig): void {
   const item = context.find(vm)
   if (item) {
     item.config = config
@@ -62,14 +62,14 @@ export function openOverlay(vm: any, config: OverlayConfig): void {
   updateOverlay(vm)
 }
 
-export function closeOverlay(vm: any): void {
+export function closeOverlay (vm: any): void {
   const item = context.find(vm)
   if (item) {
     item.overlay.show = false
   }
 }
 
-export function removeOverlay(vm: any) {
+export function removeOverlay (vm: any) {
   const item = context.find(vm)
   if (item) {
     removeNode(item.overlay.$el)

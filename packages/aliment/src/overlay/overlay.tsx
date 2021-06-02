@@ -6,7 +6,7 @@ import { ScopedSlots } from '@/utils/types'
 import { createFunctionComponent } from '@/utils/create/component'
 import { BEM } from '@/utils/create/bem'
 
-function preventTouchMove(event: TouchEvent) {
+function preventTouchMove (event: TouchEvent) {
   preventDefault(event, true)
 }
 
@@ -19,7 +19,7 @@ export type OverlayProps = {
   customStyle?: object;
 };
 
-function Overlay(
+function Overlay (
   context: RenderContext<OverlayProps>,
   props: OverlayProps,
   slots: ScopedSlots,
@@ -28,11 +28,11 @@ function Overlay(
 ) {
   const style: { [key: string]: any } = {
     zIndex: props.zIndex,
-    ...props.customStyle,
+    ...props.customStyle
   }
 
   if (isDef(props.duration)) {
-    style.animationDuration = `${ props.duration }s`
+    style.animationDuration = `${props.duration}s`
   }
   return (
     <transition name="van-fade">
@@ -57,7 +57,7 @@ Overlay.props = {
   customStyle: Object,
   lockScroll: {
     type: Boolean,
-    default: true,
+    default: true
   }
 }
 

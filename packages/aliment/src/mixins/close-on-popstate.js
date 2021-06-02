@@ -12,25 +12,25 @@ export const CloseOnPopstateMixin = {
     closeOnPopstate: Boolean
   },
 
-  data() {
+  data () {
     return {
       bindStatus: false
     }
   },
 
   watch: {
-    closeOnPopstate(val) {
+    closeOnPopstate (val) {
       this.handlePopstate(val)
     }
   },
 
   methods: {
-    onPopstate() {
+    onPopstate () {
       this.close()
       this.shouldReopen = false
     },
 
-    handlePopstate(bind) {
+    handlePopstate (bind) {
       /* istanbul ignore if */
       if (this.$isServer) {
         return

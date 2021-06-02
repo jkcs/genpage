@@ -10,13 +10,13 @@
 export type Mod = string | { [key: string]: any };
 export type Mods = Mod | Mod[];
 
-function gen(name: string, mods?: Mods): string {
+function gen (name: string, mods?: Mods): string {
   if (!mods) {
     return ''
   }
 
   if (typeof mods === 'string') {
-    return ` ${ name }--${ mods }`
+    return ` ${name}--${mods}`
   }
 
   if (Array.isArray(mods)) {
@@ -29,16 +29,16 @@ function gen(name: string, mods?: Mods): string {
   )
 }
 
-export function createBEM(name: string) {
+export function createBEM (name: string) {
   return function (el?: Mods, mods?: Mods): Mods {
     if (el && typeof el !== 'string') {
       mods = el
       el = ''
     }
 
-    el = el ? `${ name }__${ el }` : name
+    el = el ? `${name}__${el}` : name
 
-    return `${ el }${ gen(el, mods) }`
+    return `${el}${gen(el, mods)}`
   }
 }
 

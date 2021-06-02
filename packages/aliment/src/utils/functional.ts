@@ -14,13 +14,13 @@ const inheritKey = [
   'nativeOn',
   'directives',
   'staticClass',
-  'staticStyle',
+  'staticStyle'
 ]
 
 const mapInheritKey: ObjectIndex = { nativeOn: 'on' }
 
 // inherit partial context, map nativeOn to on
-export function inherit(
+export function inherit (
   context: Context,
   inheritListeners?: boolean
 ): InheritContext {
@@ -40,7 +40,7 @@ export function inherit(
 }
 
 // emit event
-export function emit(context: Context, eventName: string, ...args: any[]) {
+export function emit (context: Context, eventName: string, ...args: any[]) {
   const listeners = context.listeners[eventName]
   if (listeners) {
     if (Array.isArray(listeners)) {
@@ -54,16 +54,16 @@ export function emit(context: Context, eventName: string, ...args: any[]) {
 }
 
 // mount functional component
-export function mount(Component: any, data?: VNodeData) {
+export function mount (Component: any, data?: VNodeData) {
   const instance = new Vue({
     el: document.createElement('div'),
     props: Component.props,
-    render(h) {
+    render (h) {
       return h(Component, {
         props: this.$props,
-        ...data,
+        ...data
       })
-    },
+    }
   })
 
   document.body.appendChild(instance.$el)

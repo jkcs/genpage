@@ -7,7 +7,7 @@ import Vue, {
   VueConstructor,
   ComponentOptions,
   FunctionalComponentOptions,
-  RenderContext, CreateElement,
+  RenderContext, CreateElement
 } from 'vue'
 import { DefaultProps, FunctionComponent } from '../types'
 
@@ -30,7 +30,7 @@ export type TsxComponent<Props, Events, Slots> = (
 ) => VNode;
 
 // unify slots & scopedSlots
-export function unifySlots(context: RenderContext) {
+export function unifySlots (context: RenderContext) {
   // use data.scopedSlots in lower Vue version
   const scopedSlots = context.scopedSlots || context.data.scopedSlots || {}
   const slots = context.slots()
@@ -45,7 +45,7 @@ export function unifySlots(context: RenderContext) {
 }
 
 // should be removed after Vue 3
-function transformFunctionComponent(
+function transformFunctionComponent (
   pure: FunctionComponent
 ): GenComponentOptions {
   return {
@@ -58,7 +58,7 @@ function transformFunctionComponent(
   }
 }
 
-export function createFunctionComponent<Props = DefaultProps, Events = {}, Slots = {}>(
+export function createFunctionComponent<Props = DefaultProps, Events = {}, Slots = {}> (
   sfc: Function
 ): GenComponentOptions {
   return transformFunctionComponent(sfc as FunctionComponent)

@@ -1,13 +1,11 @@
 import { mount } from '@vue/test-utils'
-import Overlay from '@/overlay/Overlay'
-import Vue, { ComponentOptions } from 'vue'
-import { Component, VNode, CreateElement } from 'vue'
+import Overlay from '@/overlay'
 
 describe('Overlay', () => {
   it('renders props.thumb when passed', () => {
-    const component: ComponentOptions<Vue> = {
+    const component = {
       name: 'test-component',
-      render(h: CreateElement): VNode {
+      render (h) {
         return h('div', [])
       }
     }
