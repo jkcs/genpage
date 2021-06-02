@@ -176,7 +176,6 @@ async function build (args, api, options) {
 
   return new Promise(async (resolve, reject) => {
     await buildComponent()
-    console.log(webpackConfig)
 
     webpack(webpackConfig, async (err, stats) => {
       if (err) {
