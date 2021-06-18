@@ -44,6 +44,7 @@
     "webpack-merge": "^4.2.2",
     "webpackbar": "^5.0.0-3",
     "less": "^4.1.1",
-    "terser-webpack-plugin": "^1.4.4"
+    "terser-webpack-plugin": "^1.4.4",
+    "inquirer": "^8.1.1"
   }
 }

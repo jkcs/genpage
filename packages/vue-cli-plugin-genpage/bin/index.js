@@ -1,4 +1,5 @@
-var inquirer = require('inquirer')
+const inquirer = require('inquirer')
+const { createComponent } = require('./template/index')
 
 inquirer.prompt([
   {
@@ -6,7 +7,7 @@ inquirer.prompt([
     name: 'type',
     message: 'choose component type',
     choices: [
-      'jsx', 'functional'
+      'normal', 'functional'
     ]
   },
   {
@@ -16,5 +17,8 @@ inquirer.prompt([
   }
 ])
   .then(answers => {
-    console.log(answers)
+    createComponent(
+      answers.name,
+      answers.type === 'functional'
+    )
   })
