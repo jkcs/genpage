@@ -6,6 +6,7 @@ vue-cli-plugin-genpage
     - [x] umd 支持
 - [x] build
 - [x] server
+- [ ] 升级至vue3.0全面支持typescript
 
 aliment
 
