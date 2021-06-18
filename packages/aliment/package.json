@@ -12,7 +12,7 @@
     "component": "node ./node_modules/@genpage/vue-cli-plugin-genpage/bin/index.js"
   },
   "peesDependencies": {
-    "vue": "^2.6.11"
+    "vue": "^3.0.0"
   },
   "devDependencies": {
     "@genpage/vue-cli-plugin-genpage": "file:../vue-cli-plugin-genpage",
@@ -24,9 +24,10 @@
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^7.0.0",
-    "@vue/test-utils": "^1.0.3",
+    "@vue/test-utils": "^2.0.0-0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
@@ -35,8 +36,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "lint-staged": "^9.5.0",
     "typescript": "~4.1.5",
-    "vue": "^2.6.12",
-    "vue-template-compiler": "^2.6.11"
+    "vue": "^3.0.0"
   },
   "eslintConfig": {
     "root": true,
