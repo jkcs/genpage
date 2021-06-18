@@ -9,7 +9,7 @@
     "build:umd": "vue-cli-service genpage-build-lib --umd genpage.aliment",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "component": "genpage component"
+    "component": "node ./node_modules/@genpage/vue-cli-plugin-genpage/bin/index.js"
   },
   "peesDependencies": {
     "vue": "^2.6.11"

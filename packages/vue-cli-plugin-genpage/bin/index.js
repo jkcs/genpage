@@ -1,11 +1,20 @@
-const { command, version, parse } = require('commander')
+var inquirer = require('inquirer')
 
-version('genpage v0.1.0')
-command('component <component>')
-  .description('build new component')
-  .action((component) => {
-    console.log(component);
-    
+inquirer.prompt([
+  {
+    type: 'list',
+    name: 'type',
+    message: 'choose component type',
+    choices: [
+      'jsx', 'functional'
+    ]
+  },
+  {
+    type: 'input',
+    name: 'name',
+    message: 'input component name'
+  }
+])
+  .then(answers => {
+    console.log(answers)
   })
-
-parse([])
