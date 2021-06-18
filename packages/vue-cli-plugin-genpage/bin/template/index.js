@@ -34,10 +34,21 @@ function createLess() {
 `
 }
 
+function createInstall(name) {
+  return `import ${name} from './${name}'
+
+${name}.install = function (Vue) {
+  Vue.component(${name}.name, ${name})
+}
+export default ${name}
+`
+}
+
 function createComponent(name, isFunctional) {
   const path = join(SRC_DIR, name)
   const jsFile = join(path, `${name}.js`)
   const lessFile = join(path, `index.less`)
+  const entryFile = join(path, `index.js`)
 
   if (existsSync(path)) {
     console.log(`${chalk.yellow(name)} is exists. please delete it then try again`)
@@ -47,6 +58,7 @@ function createComponent(name, isFunctional) {
   emptyDirSync(path)
   smartOutputFile(jsFile, createJS(name, isFunctional))
   smartOutputFile(lessFile, createLess(name))
+  smartOutputFile(entryFile, createInstall(name))
 
   console.log(`${chalk.cyan(name)} component is created.`)
 }
