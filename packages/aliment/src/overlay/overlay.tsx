@@ -1,4 +1,4 @@
-import { CreateElement, RenderContext } from 'vue'
+import { RenderFunction, VNode } from 'vue'
 import { preventDefault } from '@/utils/dom/event'
 import { isDef, noop } from '@/utils'
 import { inherit } from '@/utils/functional'
@@ -20,11 +20,11 @@ export type OverlayProps = {
 };
 
 function Overlay (
-  context: RenderContext<OverlayProps>,
+  context: VNode<OverlayProps>,
   props: OverlayProps,
   slots: ScopedSlots,
   bem: BEM,
-  h: CreateElement
+  h: RenderFunction
 ) {
   const style: { [key: string]: any } = {
     zIndex: props.zIndex,

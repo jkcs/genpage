@@ -20,7 +20,6 @@ export default {
     methods: {
       getTest() {
           console.log(this.$refs.card)
-          console.log((this.$refs.card as Card).getThumb())
       }
     }
 }
