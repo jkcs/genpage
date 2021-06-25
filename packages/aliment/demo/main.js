@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import Button from '@/button'
-import '@/button/index.less'
+import '@/button/index.scss'
 
 const app = createApp(App)
 
