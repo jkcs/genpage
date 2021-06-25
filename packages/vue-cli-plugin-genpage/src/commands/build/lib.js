@@ -1,7 +1,7 @@
 const { smartOutputFile } = require('../../util/build/fs')
 const { emptyDirSync } = require('fs-extra')
-const { copy } = require('fs-extra')
-const { SRC_DIR, LIB_DIR, ENTRY, WEBPACK_CONFIG_FILE } = require('../../util/build/constant')
+const { copy, existsSync } = require('fs-extra')
+const { SRC_DIR, LIB_DIR, STYLE_DIR, ENTRY, WEBPACK_CONFIG_FILE } = require('../../util/build/constant')
 const { compileStyle, polymerizationStyle } = require('../../compiler/compile-style')
 const { compileTs } = require('../../compiler/compile-ts')
 const { isStyle, isNeedImportStyle, isUtils, isMixins } = require('../../util/build/index')
@@ -41,13 +41,13 @@ const compile = async (dir) => {
       return compileFile(filePath)
     })
 
-  const stylePath = join(LIB_DIR, 'index.less')
+  const styleExt = ['less', 'scss', 'css']
+    .some(ext => existsSync(join(STYLE_DIR, `index.${ext}`)))
+  const stylePath = join(LIB_DIR, `index.${styleExt}`)
 
-  queue.push(
-    smartOutputFile(
-      join(LIB_DIR, 'index.less'),
-      styles().join('')
-    )
+  smartOutputFile(
+    join(LIB_DIR, `index.${styleExt}`),
+    styles().join('')
   )
   queue.push(
     compileFile(stylePath)

@@ -1,6 +1,7 @@
 const { parse, relative, sep } = require('path')
 const { readFileSync, writeFileSync } = require('fs-extra')
 const { FileManager, render } = require('less')
+const sass = require('sass')
 const { compileCss } = require('./compile-css')
 const { replaceExt, isStyleDirStyle } = require('../util/build')
 const { LIB_DIR } = require('../util/build/constant')
@@ -28,6 +29,10 @@ const compileLess = async (filePath) => {
   return css
 }
 
+const compileSass = async (filePath) => {
+  return sass.renderSync({ file: filePath })
+}
+
 const compileFile = async (filePath) => {
   const parsedPath = parse(filePath)
 
@@ -35,6 +40,10 @@ const compileFile = async (filePath) => {
     if (parsedPath.ext === '.less') {
       const source = await compileLess(filePath)
       return await compileCss(source)
+    }
+    if (parsedPath.ext === '.scss') {
+      const source = await compileSass(filePath)
+      return await compileCss(source.css.toString())
     }
 
     const source = readFileSync(filePath, 'utf-8')
