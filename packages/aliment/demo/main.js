@@ -1,12 +1,9 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
-import Card from '@/card'
-import Overlay from '@/overlay'
+import Button from '@/button'
+import '@/button/index.less'
 
-Vue.config.productionTip = false
-Vue.use(Card)
-Vue.use(Overlay)
+const app = createApp(App)
 
-new Vue({
-  render: h => h(App)
-}).$mount('#app')
+app.use(Button)
+app.mount('#app')

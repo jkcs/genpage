@@ -1,21 +1,13 @@
 <template>
   <div id="app">
-<!--    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>-->
-    <gen-card ref="card" thumb="11111">
-      测试
-    </gen-card>
-    <gen-overlay :show="true">33333</gen-overlay>
     <button @click="getTest">测试</button>
   </div>
+  <gen-button>测试</gen-button>
 </template>
 
 <script>
-import Card from '@/card'
-import HelloWorld from './components/HelloWorld'
-
 export default {
     components: {
-      HelloWorld
     },
     methods: {
       getTest() {

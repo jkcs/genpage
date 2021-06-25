@@ -1,4 +1,5 @@
 /**
+ * from https://github.com/youzan/vant/blob/dev/src/utils/create/bem.ts
  * bem helper
  * b() // 'button'
  * b('text') // 'button__text'

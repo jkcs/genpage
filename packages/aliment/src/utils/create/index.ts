@@ -1,13 +1,18 @@
 import { createBEM as buildBEM, BEM } from './bem'
 
-import Constant from '../enum/Constant'
+import constant from '../constant'
 
-const prefix = Constant.PREFIX
+const prefix = constant.PREFIX
 
 export function getName (name: string): string {
-  return prefix + Constant.SEPARATOR + name
+  return prefix + constant.SEPARATOR + name
 }
 
-export function createBEM (name: string): BEM {
-  return buildBEM(name)
+export function createBEM (name: string): { name: string, bem: BEM } {
+  name = getName(name)
+
+  return {
+    name,
+    bem: buildBEM(name)
+  }
 }
