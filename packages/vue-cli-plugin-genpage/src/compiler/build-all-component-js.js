@@ -8,7 +8,7 @@ function buildAllComponentsJs() {
   let vueUse = []
 
   Object.keys(components).forEach(component => {
-    importComponents.push(`import ${component} from './${component}/index.js'`)
+    importComponents.push(`import ${component} from './${component}'`)
     constComponents.push(`  ${component}`)
     vueUse.push(`   vue.use(${component})`)
   })
