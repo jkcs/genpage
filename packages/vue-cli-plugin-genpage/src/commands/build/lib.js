@@ -8,7 +8,6 @@ const { isStyle, isNeedImportStyle, isUtils, isMixins } = require('../../util/bu
 const { getFiles, isDir } = require('../../util/build/fs')
 const { join } = require('path')
 const buildAllComponentsJs = require('../../compiler/build-all-component-js')
-const customWebpack = require(WEBPACK_CONFIG_FILE)
 
 const styles = polymerizationStyle()
 
@@ -119,6 +118,7 @@ module.exports = (api, options) => {
 
 function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
+  const customWebpack = require(WEBPACK_CONFIG_FILE)
   const webpackConfig = Object.assign(api.resolveWebpackConfig(), customWebpack)
 
   // No modification allowed
