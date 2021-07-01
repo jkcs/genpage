@@ -2,7 +2,11 @@
   "name": "genpage",
   "private": true,
   "scripts": {
-    "dev": "node script/dev.js"
+    "serve": "lerna run --stream --scope @genpage/gen-platform serve",
+    "build:ailment": "lerna run --stream --scope @genpage/aliment build:lib"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  },
+  "workspaces": ["packages/*"]
 }
