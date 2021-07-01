@@ -5,7 +5,6 @@
       <gen-container
         :component-list="componentList"
       >
-
       </gen-container>
     </main>
   </div>
