@@ -3,22 +3,23 @@
     <vue-draggable
       v-model="draggableComponentList"
       v-bind="draggableOptions"
+      item-key="id"
       @change="onDraggableChange"
       @start="onDraggableStart"
     >
-      <gen-edit-component-warp
-        v-for="item in componentList"
-        :key="item.id"
-        :schema="item">
-        <gen-component :schema="item">
-          <template
-            v-for="innerItem in item.child"
-            :key="innerItem.id"
-          >
-            <gen-component :schema="innerItem"/>
-          </template>
-        </gen-component>
-      </gen-edit-component-warp>
+      <template #item="{element}">
+        <gen-edit-component-warp
+          :schema="element">
+          <gen-component :schema="element">
+            <template
+              v-for="innerItem in element.child"
+              :key="innerItem.id"
+            >
+              <gen-component :schema="innerItem"/>
+            </template>
+          </gen-component>
+        </gen-edit-component-warp>
+      </template>
     </vue-draggable>
   </div>
 </template>
@@ -47,6 +48,11 @@ export default defineComponent({
     VueDraggable,
     GenComponent,
     GenEditComponentWarp
+  },
+  data (): Record<string, unknown> {
+    return {
+      list: []
+    }
   },
   props: {
     componentList: {
