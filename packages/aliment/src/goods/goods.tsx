@@ -39,11 +39,11 @@ export default defineComponent({
   },
 
   setup (props, ctx: SetupContext) {
-    const Img = (
-      <img class={ bem('img') } alt={ name } src={ props.src } />
+    const renderImg = () => (
+      props.src && <img class={ bem('img') } alt={ name } src={ props.src } />
     )
 
-    const price = (
+    const renderPrice = () => props.amount && (
       <div class={ bem('price') }>
         <span class={ bem('price-prefix') }>{ props.prefix }</span>
         <span class={ bem('price-amount') }>{ props.amount }</span>
@@ -53,12 +53,12 @@ export default defineComponent({
 
     return () => (
       <div class={ bem([props.size]) }>
-        { props.src && Img }
+        { renderImg() }
         <div class={ bem('content') }>
-          <div class={ bem('content__title') }>
+          <div class={ bem('name') }>
             { props.name }
           </div>
-          { props.amount && price }
+          { renderPrice() }
         </div>
       </div>
     )
