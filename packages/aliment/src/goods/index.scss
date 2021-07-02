@@ -1,3 +1,40 @@
 .gen-goods {
-
+  width: 330px;
+  padding: 20px;
+  &--shadow {
+    border-radius: 20px;
+    box-shadow: 0 0 14px 0 #E0E0E0;
+  }
+  &__img {
+    width: 290px;
+    height: 216px;
+  }
+  &__content {
+    width: 100%;
+    text-align: center;
+  }
+  &__name {
+    width: 100%;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 500;
+    color: #3D4155;
+    line-height: 28px;
+  }
+  &__price {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 400;
+    color: #FF4230;
+    &-prefix {
+      font-size: 22px;
+    }
+    &-amount {
+      font-weight: 500;
+      font-size: 36px;
+    }
+    &-unit {
+      font-size: 22px;
+    }
+  }
 }
