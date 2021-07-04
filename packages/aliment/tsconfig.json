@@ -19,11 +19,11 @@
       "jest"
     ],
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
       "@demo/*": [
         "demo/*"
+      ],
+      "@genpage/aliment/*": [
+        "src/*"
       ]
     },
     "lib": [
@@ -45,6 +45,8 @@
     "types/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "lib",
+    "es"
   ]
 }

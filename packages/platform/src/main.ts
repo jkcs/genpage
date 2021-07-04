@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import aliment from '@genpage/aliment/lib/index.js'
+// @ts-ignore
+import aliment from '@genpage/aliment'
 
 createApp(App)
   .use(aliment)

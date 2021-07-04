@@ -15,7 +15,7 @@ Object.keys(components).forEach(function (key) {
   externals[`@/${key}`] = `@genpage/aliment/lib/${key}`
 })
 
-externals[`@/utils`] = `@genpage/aliment/lib/utils`
+externals[`@genpage/aliment/utils`] = `@genpage/aliment/es/utils`
 utilsList.forEach(function (file) {
   file = path.basename(file, path.extname(file))
   externals[`@/utils/${file}`] = `@genpage/aliment/lib/utils/${file}`

@@ -1,6 +1,7 @@
 const { transformAsync } = require('@babel/core')
 const { smartOutputFile } = require('../util/build/fs')
 const { replaceExt, isTSX } = require('../util/build')
+const { removeSync } = require('fs-extra')
 const ts = require('typescript')
 const fs = require('fs-extra')
 
@@ -41,11 +42,15 @@ module.exports.compileTs = async function (filePath, module) {
           ]
         ]
       })
+
+      removeSync(filePath)
       smartOutputFile(replaceExt(filePath, '.js'), code)
     } catch (e) {
       console.error(e)
     }
   } else {
+
+    removeSync(filePath)
     smartOutputFile(replaceExt(filePath, '.js'), jsCode)
   }
 }

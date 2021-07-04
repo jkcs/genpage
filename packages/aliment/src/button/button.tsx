@@ -1,5 +1,5 @@
 import { defineComponent, PropType, SetupContext } from 'vue'
-import { createBEM, BUTTON_TYPE } from '@/utils'
+import { createBEM, BUTTON_TYPE } from '../utils'
 
 const { name, bem } = createBEM('button')
 
