@@ -5,6 +5,8 @@ const CRLF = '\r\n'
 const ROOT = process.env.VUE_CLI_BUILD_TARGET || process.cwd()
 const SRC_DIR = join(ROOT, 'src')
 const LIB_DIR = join(ROOT, 'lib')
+const ES_DIR = join(ROOT, 'es')
+const ES_ENTRY = join(ES_DIR, 'index.js')
 const ENTRY = join(LIB_DIR, 'index.js')
 const ENTRY_EXTS = ['js', 'ts', 'tsx', 'jsx', 'vue']
 const STYLE_DIR = join(SRC_DIR, 'style')
@@ -17,6 +19,8 @@ module.exports = {
 	ROOT,
 	SRC_DIR,
 	LIB_DIR,
+  ES_DIR,
+  ES_ENTRY,
 	ENTRY,
 	ENTRY_EXTS,
 	STYLE_DIR,

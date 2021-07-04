@@ -1,65 +1,74 @@
 const { smartOutputFile } = require('../../util/build/fs')
 const { emptyDirSync } = require('fs-extra')
 const { copy, existsSync } = require('fs-extra')
-const { SRC_DIR, LIB_DIR, STYLE_DIR, ENTRY, WEBPACK_CONFIG_FILE } = require('../../util/build/constant')
+const { SRC_DIR, LIB_DIR, ES_DIR, ES_ENTRY, STYLE_DIR, ENTRY, WEBPACK_CONFIG_FILE } = require('../../util/build/constant')
 const { compileStyle, polymerizationStyle } = require('../../compiler/compile-style')
 const { compileTs } = require('../../compiler/compile-ts')
-const { isStyle, isNeedImportStyle, isUtils, isMixins } = require('../../util/build/index')
+const { isStyle, isNeedImportStyle, isUtils, isMixins, isScript } = require('../../util/build/index')
 const { getFiles, isDir } = require('../../util/build/fs')
 const { join } = require('path')
+const chalk = require('chalk')
 const buildAllComponentsJs = require('../../compiler/build-all-component-js')
 
-const styles = polymerizationStyle()
+const compile = async (dir, styles, isES) => {
+    const files = getFiles(dir)
 
-const compileFile = (filePath) => {
-  if (isStyle(filePath)) {
-    if (isNeedImportStyle(filePath)) {
-      styles(filePath)
-    }
-    return compileStyle(filePath);
-  }
+    return await Promise.all(files
+      .map(filename => {
+        const filePath = join(dir, filename)
 
-  if (isUtils(filePath) || isMixins(filePath)) {
-    return compileTs(filePath)
-  }
+        if (isDir(filePath)) {
+          return compile(filePath, styles, isES)
+        }
 
-  // Keep the source code
-  // return remove(filePath);
+        if (isStyle(filePath)) {
+          if (isNeedImportStyle(filePath)) {
+            styles(filePath)
+          }
+          return compileStyle(filePath);
+        }
+
+        if (
+          isUtils(filePath)
+          || isMixins(filePath)
+          || (isES && isScript(filePath))
+        ) {
+          return compileTs(filePath, isES ? 'esnext' : 'commonjs')
+        }
+
+        // Keep the source code
+        // return remove(filePath)
+      })
+    )
 }
 
-const compile = async (dir) => {
-  const files = getFiles(dir)
-  const queue = files
-    .map(filename => {
-      const filePath = join(dir, filename)
-
-      if (isDir(filePath)) {
-        return compile(filePath)
-      }
-
-      return compileFile(filePath)
-    })
-
+const outPutIndexCss = async (dir, styles) => {
   const styleExt = ['less', 'scss', 'css']
-    .some(ext => existsSync(join(STYLE_DIR, `index.${ext}`)))
-  const stylePath = join(LIB_DIR, `index.${styleExt}`)
+    .find(ext => existsSync(join(STYLE_DIR, `index.${ext}`)))
+
+  const stylePath = join(dir, `index.${styleExt}`)
 
   smartOutputFile(
-    join(LIB_DIR, `index.${styleExt}`),
-    styles().join('')
+    join(dir, `index.${styleExt}`),
+    styles
   )
-  queue.push(
-    compileFile(stylePath)
-  )
-  await Promise.all(queue)
+
+  return compileStyle(stylePath)
 }
 
-const buildComponent = async () => {
-  emptyDirSync(LIB_DIR)
-  await copy(SRC_DIR, LIB_DIR)
-  await compile(LIB_DIR)
+const buildComponents = async (dir, isES) => {
+  emptyDirSync(dir)
+  await copy(SRC_DIR, dir)
 
-  smartOutputFile(ENTRY, buildAllComponentsJs())
+  const styles = polymerizationStyle(dir)
+  await compile(dir, styles, isES)
+
+  await outPutIndexCss(dir, styles().join(''))
+
+  smartOutputFile(
+    join(dir, 'index.js'),
+    buildAllComponentsJs()
+  )
 }
 
 const modifyConfig = (config, fn) => {
@@ -73,9 +82,9 @@ const modifyConfig = (config, fn) => {
 module.exports = (api, options) => {
   api.registerCommand('genpage-build-lib', {
     description: 'build for production',
-    usage: 'vue-cli-service genpage-build [options]',
+    usage: 'vue-cli-service genpage-build-lib [options]',
     options: {
-      '--umd <umdEntryName>': 'build umd release umd entry name default index'
+      '--watch': 'watch build on change',
     }
   }, async (args) => {
     process.env.NODE_ENV = 'production'
@@ -112,6 +121,19 @@ module.exports = (api, options) => {
 
     await build(args, api, options)
 
+    if (args.watch) {
+      console.info(chalk.yellowBright('Watching file changes...'))
+      const chokidar = require('chokidar')
+      chokidar.watch(SRC_DIR).on('change', async (path) => {
+        try {
+          await build(args, api, options)
+        } catch (err) {
+          console.fail('Compile failed: ' + path)
+          console.log(err)
+        }
+      })
+    }
+
     delete process.env.VUE_CLI_BUILD_TARGET
   })
 }
@@ -126,33 +148,10 @@ function getWebpackConfig (api, args, options) {
   // check for common config errors
   validateWebpackConfig(webpackConfig, api, options, 'lib')
 
-  if (args.umd) {
-    const entryName = typeof args.umd === 'string'
-      ? args.umd
-      : 'index'
-    const entryNameMin = `${entryName}.min`
-    const TerserWebpackPlugin = require('terser-webpack-plugin')
-
+  if (args.watch) {
     modifyConfig(webpackConfig, config => {
-      const entry = config.entry.index
-      config.entry = {
-        [entryName]: entry,
-        [entryNameMin]: entry
-      }
-
-      config.output = {
-        ...config.output,
-        filename: '[name].js',
-        libraryTarget: 'umd'
-      }
-
       config.optimization = {
-        minimize: true,
-        minimizer: [
-          new TerserWebpackPlugin({
-            include: /min/
-          })
-        ]
+        minimize: false
       }
     })
   }
@@ -175,7 +174,8 @@ async function build (args, api, options) {
   const webpackConfig = getWebpackConfig(api, args, options)
 
   return new Promise(async (resolve, reject) => {
-    await buildComponent()
+    await buildComponents(LIB_DIR)
+    await buildComponents(ES_DIR, true)
 
     webpack(webpackConfig, async (err, stats) => {
       if (err) {

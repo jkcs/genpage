@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "vue": "^3.0.0",
-    "vuedraggable": "^4.0.3"
+    "vuedraggable": "^4.0.3",
+    "@genpage/aliment": "file:../aliment"
   },
   "devDependencies": {
     "@genpage/vue-cli-plugin-genpage": "file:../vue-cli-plugin-genpage",

@@ -41,10 +41,10 @@ module.exports = {
         : '[name]/index.js'
     },
     chunkFilename: '[id].js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'umd'
   },
   optimization: {
-    minimize: false
+    minimize: true
   },
   externals
 }

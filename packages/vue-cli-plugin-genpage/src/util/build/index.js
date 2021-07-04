@@ -12,6 +12,7 @@ function cached(fn) {
 
 const EXT_REGEXP = /\.\w+$/
 const SCRIPT_REGEXP = /\.(js|ts|jsx|tsx)$/
+const TSX_REGEXP = /\.tsx$/
 const STYLE_REGEXP = /\.(css|less|scss)$/
 const UTILS_REGEXP = new RegExp(`\\${sep}utils\\${sep}.+\.ts`)
 const MIXINS_REGEXP = new RegExp(`\\${sep}mixins\\${sep}.+\.ts`)
@@ -20,6 +21,10 @@ const NEED_IMPORT_STYLE_REGEXP = /[^lib][^\w]index\.(css|less|scss)$/
 
 function replaceExt(path, ext) {
   return path.replace(EXT_REGEXP, ext)
+}
+
+function isTSX(path) {
+  return TSX_REGEXP.test(path)
 }
 
 function isScript(path) {
@@ -55,6 +60,7 @@ module.exports = {
   STYLE_REGEXP,
   replaceExt,
   isScript,
+  isTSX,
   isStyle,
   isUtils,
   isNeedImportStyle,

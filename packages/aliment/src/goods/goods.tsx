@@ -27,10 +27,7 @@ export default defineComponent({
       default: '￥'
     },
 
-    amount: {
-      type: [String, Number],
-      default: ''
-    },
+    amount: [String, Number],
 
     unit: {
       type: String,

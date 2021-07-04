@@ -63,12 +63,12 @@ const compileStyle = async (filePath) => {
   writeFileSync(replaceExt(filePath, '.css'), css)
 }
 
-const polymerizationStyle = () => {
+const polymerizationStyle = (dir) => {
   const contentArr = []
-  return function(absolutePath) {
+  return function (absolutePath) {
     if (absolutePath) {
       const reg = new RegExp('\\' + sep, 'g')
-      const relativePath = relative(LIB_DIR, absolutePath).replace(reg, '/')
+      const relativePath = relative(dir, absolutePath).replace(reg, '/')
       const content = `@import '${relativePath}'; \n`
 
       if (isStyleDirStyle(absolutePath)) {

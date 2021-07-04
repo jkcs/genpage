@@ -2,10 +2,20 @@
   "name": "@genpage/aliment",
   "version": "0.1.0",
   "private": true,
+  "main": "./lib/index.js",
+  "module": "./es/index.js",
+  "style": "./lib/index.css",
+  "typings": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "es",
+    "types"
+  ],
   "scripts": {
     "serve": "vue-cli-service genpage-serve",
     "build": "vue-cli-service genpage-build",
     "build:lib": "vue-cli-service genpage-build-lib",
+    "dev:lib": "vue-cli-service genpage-build-lib --watch",
     "build:umd": "vue-cli-service genpage-build-lib --umd genpage.aliment",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -39,6 +49,9 @@
     "sass-loader": "^8.0.2",
     "typescript": "~4.1.5",
     "vue": "^3.0.0"
+  },
+  "resolutions": {
+    "@genpage/vue-cli-plugin-genpage": "file:../vue-cli-plugin-genpage"
   },
   "eslintConfig": {
     "root": true,

@@ -1,4 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import aliment from '@genpage/aliment/lib/index.js'
 
-createApp(App).mount('#app')
+createApp(App)
+  .use(aliment)
+  .mount('#app')
