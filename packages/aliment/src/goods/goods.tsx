@@ -1,5 +1,5 @@
 import { defineComponent, SetupContext } from 'vue'
-import { createBEM, isDef } from '@/utils'
+import { createBEM, isDef } from '../utils'
 
 const { name, bem } = createBEM('goods')
 

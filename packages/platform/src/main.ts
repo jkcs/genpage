@@ -1,8 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-// @ts-ignore
 import aliment from '@genpage/aliment'
+import '@genpage/aliment/lib/index.css'
 
-createApp(App)
-  .use(aliment)
-  .mount('#app')
+const app = createApp(App)
+
+app.use(aliment)
+app.mount('#app')
