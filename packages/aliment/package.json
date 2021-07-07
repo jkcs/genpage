@@ -14,9 +14,8 @@
   "scripts": {
     "serve": "vue-cli-service genpage-serve",
     "build": "vue-cli-service genpage-build",
-    "build:lib": "vue-cli-service genpage-build-lib",
-    "dev:lib": "vue-cli-service genpage-build-lib --watch",
-    "build:umd": "vue-cli-service genpage-build-lib --umd genpage.aliment",
+    "build:lib": "vue-cli-service genpage-build-lib --name aliment",
+    "dev:lib": "vue-cli-service genpage-build-lib --name aliment --watch",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "create:component": "npx genpage"

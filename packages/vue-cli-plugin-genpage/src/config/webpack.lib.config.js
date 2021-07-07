@@ -1,50 +1,30 @@
-// const { SRC_DIR } = require('../util/build/constant')
-// const { generateComponentEntry } = require('../util/build/fs')
-// const fs = require('fs')
-// const path = require('path')
+const TerserWebpackPlugin = require('terser-webpack-plugin')
 const { ENTRY, LIB_DIR } = require('../util/build/constant')
 
-// const components = generateComponentEntry()
-// const utilsList = fs.readdirSync(path.resolve(SRC_DIR, './utils'))
-// const mixinsList = fs.readdirSync(path.resolve(SRC_DIR, './mixins'))
-const externals = {
-  vue: 'vue'
-}
-
-// Object.keys(components).forEach(function (key) {
-//   externals[`@/${key}`] = `@genpage/aliment/lib/${key}`
-// })
-
-// externals[`@genpage/aliment/utils`] = `@genpage/aliment/es/utils`
-// utilsList.forEach(function (file) {
-//   file = path.basename(file, path.extname(file))
-//   externals[`@/utils/${file}`] = `@genpage/aliment/lib/utils/${file}`
-// })
-
-// externals[`@/mixins`] = `@genpage/aliment/lib/mixins`
-// mixinsList.forEach(function (file) {
-//   file = path.basename(file, path.extname(file))
-//   externals[`@/mixins/${file}`] = `@genpage/aliment/lib/mixins/${file}`
-// })
-
-
-module.exports = {
+module.exports = (name) => ({
   entry: {
-    // ...components,
-    index: ENTRY
+    [name]: ENTRY,
+    [`${name}.min`]: ENTRY
   },
   output: {
     path: LIB_DIR,
-    filename: (pathData) => {
-      return pathData.chunk.name.indexOf('index') > -1
-        ? '[name].js'
-        : '[name]/index.js'
-    },
-    chunkFilename: '[id].js',
-    libraryTarget: 'umd'
+    filename: '[name].js',
+    libraryTarget: 'umd',
+    library: name,
+    umdNamedDefine: true,
+    // https://github.com/webpack/webpack/issues/6522
+    globalObject: "typeof self !== 'undefined' ? self : this"
   },
   optimization: {
-    minimize: true
+    // minimize: false,
+    minimize: true,
+    minimizer: [
+      new TerserWebpackPlugin({
+        include: /min/
+      })
+    ]
   },
-  externals
-}
+  externals: {
+    vue: 'vue'
+  }
+})

@@ -66,10 +66,15 @@ const buildComponents = async (dir, isModule) => {
 
   await outPutIndexCss(dir, styles().join(''))
 
+  const entryPath = join(dir, 'index.js')
   smartOutputFile(
-    join(dir, 'index.js'),
+    entryPath,
     buildAllComponentsJs()
   )
+
+  if (!isModule) {
+    await compileTs(entryPath)
+  }
 }
 
 const modifyConfig = (config, fn) => {
@@ -85,12 +90,12 @@ module.exports = (api, options) => {
     description: 'build for production',
     usage: 'vue-cli-service genpage-build-lib [options]',
     options: {
+      '--name <name>': 'lib name default index',
       '--watch': 'watch build on change',
     }
   }, async (args) => {
     process.env.NODE_ENV = 'production'
     process.env.VUE_CLI_BUILD_TARGET = args.target
-
     api.chainWebpack(webpackConfig => {
       webpackConfig
         .output
@@ -141,7 +146,7 @@ module.exports = (api, options) => {
 
 function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
-  const customWebpack = require(WEBPACK_LIB_CONFIG_FILE)
+  const customWebpack = require(WEBPACK_LIB_CONFIG_FILE)(args.name || 'index')
   const webpackConfig = Object.assign(api.resolveWebpackConfig(), customWebpack)
 
   // No modification allowed
