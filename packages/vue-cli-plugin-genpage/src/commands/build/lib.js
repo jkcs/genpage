@@ -1,16 +1,17 @@
 const { smartOutputFile } = require('../../util/build/fs')
 const { emptyDirSync } = require('fs-extra')
 const { copy, existsSync } = require('fs-extra')
-const { SRC_DIR, LIB_DIR, ES_DIR, ES_ENTRY, STYLE_DIR, ENTRY, WEBPACK_CONFIG_FILE } = require('../../util/build/constant')
+const { SRC_DIR, LIB_DIR, ES_DIR, STYLE_DIR, WEBPACK_LIB_CONFIG_FILE } = require('../../util/build/constant')
 const { compileStyle, polymerizationStyle } = require('../../compiler/compile-style')
 const { compileTs } = require('../../compiler/compile-ts')
-const { isStyle, isNeedImportStyle, isUtils, isMixins, isScript } = require('../../util/build/index')
+const { compileTsx } = require('../../compiler/compile-tsx')
+const { isStyle, isNeedImportStyle, isScript, isTSX } = require('../../util/build/index')
 const { getFiles, isDir } = require('../../util/build/fs')
 const { join } = require('path')
 const chalk = require('chalk')
 const buildAllComponentsJs = require('../../compiler/build-all-component-js')
 
-const compile = async (dir, styles, isES) => {
+const compile = async (dir, styles, isModule) => {
     const files = getFiles(dir)
 
     return await Promise.all(files
@@ -18,7 +19,7 @@ const compile = async (dir, styles, isES) => {
         const filePath = join(dir, filename)
 
         if (isDir(filePath)) {
-          return compile(filePath, styles, isES)
+          return compile(filePath, styles, isModule)
         }
 
         if (isStyle(filePath)) {
@@ -28,12 +29,12 @@ const compile = async (dir, styles, isES) => {
           return compileStyle(filePath);
         }
 
-        if (
-          isUtils(filePath)
-          || isMixins(filePath)
-          || (isES && isScript(filePath))
-        ) {
-          return compileTs(filePath, isES ? 'esnext' : 'commonjs')
+        if (isTSX(filePath)) {
+          return compileTsx(filePath, isModule)
+        }
+
+        if (isScript(filePath)) {
+          return compileTs(filePath, isModule)
         }
 
         // Keep the source code
@@ -56,12 +57,12 @@ const outPutIndexCss = async (dir, styles) => {
   return compileStyle(stylePath)
 }
 
-const buildComponents = async (dir, isES) => {
+const buildComponents = async (dir, isModule) => {
   emptyDirSync(dir)
   await copy(SRC_DIR, dir)
 
   const styles = polymerizationStyle(dir)
-  await compile(dir, styles, isES)
+  await compile(dir, styles, isModule)
 
   await outPutIndexCss(dir, styles().join(''))
 
@@ -140,7 +141,7 @@ module.exports = (api, options) => {
 
 function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
-  const customWebpack = require(WEBPACK_CONFIG_FILE)
+  const customWebpack = require(WEBPACK_LIB_CONFIG_FILE)
   const webpackConfig = Object.assign(api.resolveWebpackConfig(), customWebpack)
 
   // No modification allowed

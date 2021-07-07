@@ -12,7 +12,7 @@ const ENTRY_EXTS = ['js', 'ts', 'tsx', 'jsx', 'vue']
 const STYLE_DIR = join(SRC_DIR, 'style')
 const CONFIG_DIR = join(__dirname, '../../config')
 const POSTCSS_CONFIG_FILE = join(CONFIG_DIR, 'postcss.config.js')
-const WEBPACK_CONFIG_FILE = join(CONFIG_DIR, 'webpack.config.js')
+const WEBPACK_LIB_CONFIG_FILE = join(CONFIG_DIR, 'webpack.lib.config.js')
 
 module.exports = {
   CRLF,
@@ -26,5 +26,5 @@ module.exports = {
 	STYLE_DIR,
 	CONFIG_DIR,
 	POSTCSS_CONFIG_FILE,
-  WEBPACK_CONFIG_FILE
+  WEBPACK_LIB_CONFIG_FILE
 }
