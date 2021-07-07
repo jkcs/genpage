@@ -1,6 +1,8 @@
 const { generateComponentEntry } = require('../util/build/fs')
+const { PACKAGE_JSON } = require('../util/build/constant')
 
 function buildAllComponentsJs() {
+  const { version } = require(PACKAGE_JSON)
   const components = generateComponentEntry()
   const CRLF = '\r\n'
   let importComponents = []
@@ -29,7 +31,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
-  version: '0.1.0',
+  version: '${version}',
   install,
 ${constComponents}
 }
