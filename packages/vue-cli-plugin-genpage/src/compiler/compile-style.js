@@ -4,7 +4,6 @@ const { FileManager, render } = require('less')
 const sass = require('sass')
 const { compileCss } = require('./compile-css')
 const { replaceExt, isStyleDirStyle } = require('../util/build')
-const { LIB_DIR } = require('../util/build/constant')
 
 class TildeResolver extends FileManager {
   loadFile(filename, ...args) {
@@ -49,7 +48,6 @@ const compileFile = async (filePath) => {
     const source = readFileSync(filePath, 'utf-8')
     return await compileCss(source)
   } catch (err) {
-    // consola.error('Compile style failed: ' + filePath)
     console.log('Compile style failed: ' + filePath)
     console.log(err)
     throw err

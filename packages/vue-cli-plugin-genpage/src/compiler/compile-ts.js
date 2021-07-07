@@ -18,42 +18,4 @@ module.exports.compileTs = async function (filePath, isModule) {
 
   fs.removeSync(filePath)
   smartOutputFile(replaceExt(filePath, '.js'), jsCode)
-
-  // if (isTSX(filePath)) {
-  //   try {
-  //     const { code } = await transformAsync(jsCode, {
-  //       filename: filePath,
-  //       configFile: false, // config just this
-  //       presets: [
-  //         [
-  //           require.resolve('@babel/preset-env'),
-  //           {
-  //             // modules: !isModule,
-  //             // modules: isModule ? 'commonjs' : false,
-  //             modules: 'commonjs',
-  //             loose: true
-  //           },
-  //         ],
-  //         require.resolve('@babel/preset-typescript'),
-  //       ],
-  //       plugins: [
-  //         [
-  //           require.resolve('@vue/babel-plugin-jsx'),
-  //           {
-  //             enableObjectSlots: false
-  //           }
-  //         ]
-  //       ]
-  //     })
-  //
-  //     removeSync(filePath)
-  //     smartOutputFile(replaceExt(filePath, '.js'), code)
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // } else {
-  //
-  //   removeSync(filePath)
-  //   smartOutputFile(replaceExt(filePath, '.js'), jsCode)
-  // }
 }

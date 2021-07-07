@@ -32,6 +32,7 @@ module.exports.compileTsx = async function (filePath, isModule) {
       fs.removeSync(filePath)
       smartOutputFile(replaceExt(filePath, '.js'), code)
     } catch (e) {
-      console.error(e)
+      console.log('Compile TSX failed: ' + filePath)
+      console.log(e)
     }
 }
