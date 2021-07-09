@@ -5,11 +5,13 @@ const { SRC_DIR, LIB_DIR, ES_DIR, STYLE_DIR, WEBPACK_LIB_CONFIG_FILE } = require
 const { compileStyle, polymerizationStyle } = require('../../compiler/compile-style')
 const { compileTs } = require('../../compiler/compile-ts')
 const { compileTsx } = require('../../compiler/compile-tsx')
+const { genTypes } = require('../../compiler/gen-types')
 const { isStyle, isNeedImportStyle, isScript, isTSX } = require('../../util/build/index')
 const { getFiles, isDir } = require('../../util/build/fs')
 const { join } = require('path')
 const chalk = require('chalk')
 const buildAllComponentsJs = require('../../compiler/build-all-component-js')
+const { done, error, logWithSpinner, stopSpinner } = require('@vue/cli-shared-utils')
 
 const compile = async (dir, styles, isModule) => {
     const files = getFiles(dir)
@@ -58,22 +60,31 @@ const outPutIndexCss = async (dir, styles) => {
 }
 
 const buildComponents = async (dir, isModule) => {
-  emptyDirSync(dir)
-  await copy(SRC_DIR, dir)
+  logWithSpinner(`Compile dir ${dir}`)
 
-  const styles = polymerizationStyle(dir)
-  await compile(dir, styles, isModule)
+  try {
+    emptyDirSync(dir)
+    await copy(SRC_DIR, dir)
 
-  await outPutIndexCss(dir, styles().join(''))
+    const styles = polymerizationStyle(dir)
+    await compile(dir, styles, isModule)
 
-  const entryPath = join(dir, 'index.js')
-  smartOutputFile(
-    entryPath,
-    buildAllComponentsJs()
-  )
+    await outPutIndexCss(dir, styles().join(''))
 
-  if (!isModule) {
-    await compileTs(entryPath)
+    const entryPath = join(dir, 'index.js')
+    smartOutputFile(
+      entryPath,
+      buildAllComponentsJs()
+    )
+
+    if (!isModule) {
+      await compileTs(entryPath)
+    }
+
+    stopSpinner(true)
+    done(`Compiled successfully. `)
+  } catch (e) {
+    error(e)
   }
 }
 
@@ -96,6 +107,8 @@ module.exports = (api, options) => {
   }, async (args) => {
     process.env.NODE_ENV = 'production'
     process.env.VUE_CLI_BUILD_TARGET = args.target
+    args.name = args.name || 'index'
+
     api.chainWebpack(webpackConfig => {
       webpackConfig
         .output
@@ -104,7 +117,7 @@ module.exports = (api, options) => {
 
       webpackConfig
         .plugin('webpackbar')
-        .use(require('webpackbar'), [{ name: 'Genpage' }])
+        .use(require('webpackbar'), [{ name: `Gen ${args.name}.js` }])
 
       webpackConfig
         .plugins
@@ -146,7 +159,7 @@ module.exports = (api, options) => {
 
 function getWebpackConfig (api, args, options) {
   const validateWebpackConfig = require('@vue/cli-service/lib/util/validateWebpackConfig')
-  const customWebpack = require(WEBPACK_LIB_CONFIG_FILE)(args.name || 'index')
+  const customWebpack = require(WEBPACK_LIB_CONFIG_FILE)(args.name)
   const webpackConfig = Object.assign(api.resolveWebpackConfig(), customWebpack)
 
   // No modification allowed
@@ -182,6 +195,7 @@ async function build (args, api, options) {
   return new Promise(async (resolve, reject) => {
     await buildComponents(LIB_DIR)
     await buildComponents(ES_DIR, true)
+    await genTypes()
 
     webpack(webpackConfig, async (err, stats) => {
       if (err) {

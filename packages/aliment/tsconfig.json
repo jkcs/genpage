@@ -21,9 +21,6 @@
     "paths": {
       "@demo/*": [
         "demo/*"
-      ],
-      "@genpage/aliment/*": [
-        "src/*"
       ]
     },
     "lib": [

@@ -6,4 +6,5 @@ button.install = function (vue: App) {
   vue.component('GenButton', button)
 }
 
+export { button }
 export default button
