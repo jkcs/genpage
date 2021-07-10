@@ -82,7 +82,6 @@ const buildComponents = async (dir, isModule) => {
     }
 
     stopSpinner(true)
-    done(`Compiled successfully. `)
   } catch (e) {
     error(e)
   }
