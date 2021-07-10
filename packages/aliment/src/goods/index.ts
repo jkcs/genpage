@@ -1,9 +1,10 @@
 import type { App } from 'vue'
-import goods from './goods'
+import Goods from './goods'
+import { WithAPPInstall } from '../utils'
 
-goods.install = function (vue: App) {
-  vue.component(goods.name, goods)
-  vue.component('GenGoods', goods)
+Goods.install = function (app: App) {
+  app.component(Goods.name, Goods)
 }
 
-export default goods
+export { Goods }
+export default Goods as WithAPPInstall<typeof Goods>

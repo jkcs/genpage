@@ -16,6 +16,5 @@ module.exports.compileTs = async function (filePath, isModule) {
     }
   )
 
-  fs.removeSync(filePath)
   smartOutputFile(replaceExt(filePath, '.js'), jsCode)
 }

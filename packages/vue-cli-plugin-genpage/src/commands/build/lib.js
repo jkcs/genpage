@@ -6,12 +6,12 @@ const { compileStyle, polymerizationStyle } = require('../../compiler/compile-st
 const { compileTs } = require('../../compiler/compile-ts')
 const { compileTsx } = require('../../compiler/compile-tsx')
 const { genTypes } = require('../../compiler/gen-types')
+const { clearUselessFile } = require('../../compiler/clear-useless-file')
 const { isStyle, isNeedImportStyle, isScript, isTSX } = require('../../util/build/index')
 const { getFiles, isDir } = require('../../util/build/fs')
 const { join } = require('path')
-const chalk = require('chalk')
-const buildAllComponentsJs = require('../../compiler/build-all-component-js')
-const { done, error, logWithSpinner, stopSpinner } = require('@vue/cli-shared-utils')
+const buildAllComponentsTs = require('../../compiler/build-all-component-ts')
+const { done, log, error, chalk, logWithSpinner, stopSpinner } = require('@vue/cli-shared-utils')
 
 const compile = async (dir, styles, isModule) => {
     const files = getFiles(dir)
@@ -71,15 +71,13 @@ const buildComponents = async (dir, isModule) => {
 
     await outPutIndexCss(dir, styles().join(''))
 
-    const entryPath = join(dir, 'index.js')
+    const entryPath = join(dir, 'index.ts')
     smartOutputFile(
       entryPath,
-      buildAllComponentsJs()
+      buildAllComponentsTs()
     )
 
-    if (!isModule) {
-      await compileTs(entryPath)
-    }
+    await compileTs(entryPath, isModule)
 
     stopSpinner(true)
   } catch (e) {
@@ -180,11 +178,6 @@ function getWebpackConfig (api, args, options) {
 async function build (args, api, options) {
   const webpack = require('webpack')
 
-  const {
-    log,
-    done
-  } = require('@vue/cli-shared-utils')
-
   options.productionSourceMap = !!args['source-map']
 
   log()
@@ -195,6 +188,8 @@ async function build (args, api, options) {
     await buildComponents(LIB_DIR)
     await buildComponents(ES_DIR, true)
     await genTypes()
+    await clearUselessFile(LIB_DIR)
+    await clearUselessFile(ES_DIR)
 
     webpack(webpackConfig, async (err, stats) => {
       if (err) {

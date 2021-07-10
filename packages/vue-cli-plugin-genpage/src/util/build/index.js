@@ -1,6 +1,4 @@
 const { sep } = require('path')
-const fs = require('./fs')
-const constant = require('./constant')
 
 function cached(fn) {
   const cache = Object.create(null)
@@ -10,6 +8,7 @@ function cached(fn) {
   })
 }
 
+const CAMELIZE_REGEXP = /-(\w)/g
 const EXT_REGEXP = /\.\w+$/
 const SCRIPT_REGEXP = /\.(js|ts|jsx|tsx)$/
 const TSX_REGEXP = /\.tsx$/
@@ -51,9 +50,15 @@ function isNeedImportStyle(path) {
   return NEED_IMPORT_STYLE_REGEXP.test(path)
 }
 
+function camelize(str, isCapitalize) {
+  str = isCapitalize
+    ? `-${str}`
+    : str
+
+  return str.replace(CAMELIZE_REGEXP, (_, c) => c.toUpperCase())
+}
+
 module.exports = {
-  ...fs,
-  ...constant,
   cached,
   EXT_REGEXP,
   SCRIPT_REGEXP,
@@ -65,5 +70,6 @@ module.exports = {
   isUtils,
   isNeedImportStyle,
   isStyleDirStyle,
-  isMixins
+  isMixins,
+  camelize
 }

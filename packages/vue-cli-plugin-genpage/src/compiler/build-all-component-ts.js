@@ -1,5 +1,6 @@
 const { generateComponentEntry } = require('../util/build/fs')
 const { PACKAGE_JSON } = require('../util/build/constant')
+const { camelize } = require('../util/build')
 
 function buildAllComponentsJs() {
   const { version } = require(PACKAGE_JSON)
@@ -10,30 +11,28 @@ function buildAllComponentsJs() {
   let vueUse = []
 
   Object.keys(components).forEach(component => {
-    importComponents.push(`import ${component} from './${component}'`)
-    constComponents.push(`  ${component}`)
-    vueUse.push(`   vue.use(${component})`)
+    const componentName = camelize(component, true)
+    importComponents.push(`import ${componentName} from './${component}'`)
+    constComponents.push(`${componentName}`)
+    vueUse.push(`   app.use(${componentName})`)
   })
 
   importComponents = importComponents.join(CRLF)
-  constComponents = constComponents.join(',' + CRLF)
+  constComponents = constComponents.join(', ')
   vueUse = vueUse.join(CRLF)
 
-  return`${importComponents}
+  return`import { App } from 'vue'
+${importComponents}
 
-const install = function(vue) {
+const install = function(app: App) {
 ${vueUse}
 }
 
-/* istanbul ignore if */
-if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue)
-}
+export { ${constComponents} }
 
 export default {
   version: '${version}',
   install,
-${constComponents}
 }
   `
 }
