@@ -36,8 +36,9 @@ export default defineComponent({
   },
 
   setup (props, ctx: SetupContext) {
+    const style = { 'object-fit': 'cover' }
     const renderImg = () => props.src && (
-      <img class={ bem('img') } alt={ name } src={ props.src } />
+      <img class={ bem('img') } alt={ name } src={ props.src } style={ style } />
     )
 
     const renderPrice = () => {
