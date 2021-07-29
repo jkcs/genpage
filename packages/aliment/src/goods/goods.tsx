@@ -42,9 +42,13 @@ export default defineComponent({
   },
 
   setup (props, ctx: SetupContext) {
-    const style = { objectFit: 'cover' }
+    const renderName = () => props.name && (
+      <div class={bem('name')}>
+        {props.name}
+      </div>
+    )
     const renderImg = () => props.src && (
-      <Image class={bem('img')} alt={props.name} src={props.src} style={style}/>
+      <Image class={bem('img')} alt={props.name} src={props.src} fit={props.fit}/>
     )
 
     const renderPrice = () => {
@@ -59,7 +63,7 @@ export default defineComponent({
           <span class={bem('price-prefix')}>{props.prefix}</span>
           <span class={bem('price-amount')}>
             <span>{isDef(_amount) ? _amount : ''}</span>
-            <span>{isDef(__amount) ? __amount : ''}</span>
+            <span>{isDef(__amount) ? '.' + __amount : ''}</span>
           </span>
           <span class={bem('price-unit')}>{props.unit}</span>
         </div>
@@ -69,10 +73,8 @@ export default defineComponent({
     return () => (
       <div class={bem([props.size])}>
         {renderImg()}
-        <div v-if={!!props.name} class={bem('content')}>
-          <div class={bem('name')}>
-            {props.name}
-          </div>
+        <div class={bem('content')}>
+          {renderName()}
           {renderPrice()}
         </div>
       </div>

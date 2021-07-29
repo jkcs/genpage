@@ -8,17 +8,31 @@ const {
 } = createBEM('image')
 
 export type ImageFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'
+export type ImageEvents = 'auto' | 'none' | 'unset' | 'initial' | 'inherit'
 
 export default defineComponent({
     name,
 
     props: {
       fit: String as PropType<ImageFit>,
+
       src: String,
+
       alt: String,
+
       width: [Number, String],
+
       height: [Number, String],
-      radius: [Number, String]
+
+      radius: [Number, String],
+
+      /**
+       * 在 img 标签上的原生 style pointer-events 的值
+       */
+      events: {
+        type: String as PropType<ImageEvents>,
+        default: 'none'
+      }
     },
 
     setup (props, ctx) {
@@ -46,8 +60,11 @@ export default defineComponent({
       })
 
       const renderImage = () => {
-
-        return (<img class={bem('img')} src={props.src} alt={props.alt} style={{ objectFit: props.fit }}/>)
+        const style: CSSProperties = {
+          pointerEvents: props.events,
+          objectFit: props.fit
+        }
+        return (<img class={bem('img')} src={props.src} alt={props.alt} style={style}/>)
       }
 
       return () => (

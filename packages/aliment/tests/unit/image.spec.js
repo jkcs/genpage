@@ -1,7 +1,14 @@
 import { mount } from '@vue/test-utils'
 import image from '@/image'
+import { createBEM } from '@/utils'
 
 describe('image', () => {
+
+  const {
+    name,
+    bem
+  } = createBEM('image')
+
   const component = {
     name: 'test-component',
     render (h) {
@@ -43,6 +50,36 @@ describe('image', () => {
     const wrapper = mount(image, { propsData: props })
 
     expect(wrapper.element.firstElementChild.style.objectFit).toEqual(props.fit)
+  })
+
+  it('renders props events when passed', async () => {
+    const props = { events: 'none' }
+    const component = {
+      name: 'test-component',
+      components: {
+        'gen-image': image
+      },
+      template: `<div @click="handleClick('TestClick')"><gen-image v-bind="$attrs" ></gen-image></div>`,
+      methods: {
+        handleClick() {
+          this.$emit('TestClick', 'TestClick')
+        }
+      }
+    }
+    const wrapper = mount(component, { propsData: props })
+
+    const imgElement = wrapper.element.querySelector('.' + bem('img'))
+    expect(imgElement).not.toBeNull()
+    expect(imgElement.style.pointerEvents).toEqual(props.events)
+    await wrapper.find('.' + bem('img')).trigger('click')
+    expect(wrapper.emitted().click.length).toBe(1)
+    expect(wrapper.emitted().TestClick[0]).toEqual(['TestClick'])
+
+    await wrapper.setProps({ events: 'auto' })
+    expect(imgElement.style.pointerEvents).toEqual('auto')
+    await wrapper.find('.' + bem('img')).trigger('click')
+    expect(wrapper.emitted().click.length).toBe(2)
+    expect(wrapper.emitted().TestClick[0]).toEqual(['TestClick'])
   })
 
 })
