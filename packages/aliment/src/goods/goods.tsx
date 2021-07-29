@@ -1,21 +1,27 @@
-import { defineComponent, SetupContext } from 'vue'
-import { createBEM, isDef } from '../utils'
+import { defineComponent, PropType, SetupContext } from 'vue'
+import { ComponentSize, createBEM, isDef } from '../utils'
+import Image, { ImageFit } from '../image/image'
 
-const { name, bem } = createBEM('goods')
+const {
+  name,
+  bem
+} = createBEM('goods')
 
 export default defineComponent({
   name,
 
   props: {
     size: {
-      type: String,
-      default: 'midden'
+      type: String as PropType<ComponentSize>,
+      default: 'medium'
     },
 
     src: {
       type: String,
       default: ''
     },
+
+    fit: String as PropType<ImageFit>,
 
     name: {
       type: String,
@@ -24,7 +30,7 @@ export default defineComponent({
 
     prefix: {
       type: String,
-      default: '￥'
+      default: '¥'
     },
 
     amount: [String, Number],
@@ -36,9 +42,9 @@ export default defineComponent({
   },
 
   setup (props, ctx: SetupContext) {
-    const style = { 'object-fit': 'cover' }
+    const style = { objectFit: 'cover' }
     const renderImg = () => props.src && (
-      <img class={ bem('img') } alt={ name } src={ props.src } style={ style } />
+      <Image class={bem('img')} alt={props.name} src={props.src} style={style}/>
     )
 
     const renderPrice = () => {
@@ -49,25 +55,25 @@ export default defineComponent({
       const [_amount, __amount] = String(props.amount || 0).split('.')
 
       return (
-        <div class={ bem('price') }>
-          <span class={ bem('price-prefix') }>{ props.prefix }</span>
-          <span class={ bem('price-amount') }>
-            <span>{ isDef(_amount) ? _amount : '' }</span>
-            <span>{ isDef(__amount) ? __amount : '' }</span>
+        <div class={bem('price')}>
+          <span class={bem('price-prefix')}>{props.prefix}</span>
+          <span class={bem('price-amount')}>
+            <span>{isDef(_amount) ? _amount : ''}</span>
+            <span>{isDef(__amount) ? __amount : ''}</span>
           </span>
-          <span class={ bem('price-unit') }>{ props.unit }</span>
+          <span class={bem('price-unit')}>{props.unit}</span>
         </div>
       )
     }
 
     return () => (
-      <div class={ bem([props.size]) }>
-        { renderImg() }
-        <div class={ bem('content') }>
-          <div class={ bem('name') }>
-            { props.name }
+      <div class={bem([props.size])}>
+        {renderImg()}
+        <div v-if={!!props.name} class={bem('content')}>
+          <div class={bem('name')}>
+            {props.name}
           </div>
-          { renderPrice() }
+          {renderPrice()}
         </div>
       </div>
     )

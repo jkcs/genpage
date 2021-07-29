@@ -1,0 +1,15 @@
+@import "../style/mixins";
+@include b(image) {
+  display: inline-block;
+  position: relative;
+
+  @include m(radius) {
+    overflow: hidden;
+  }
+
+  @include e(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}

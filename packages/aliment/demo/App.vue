@@ -1,8 +1,12 @@
 <template>
-  <div id="app">
-    <button @click="getTest">测试</button>
+  <div class="row">
+    <div class="button">
+      <gen-button @click="getTest">测试</gen-button>
+    </div>
+    <div class="goods">
+      <gen-goods></gen-goods>
+    </div>
   </div>
-  <gen-button>测试</gen-button>
 </template>
 
 <script>
