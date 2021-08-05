@@ -1,0 +1,29 @@
+@import "../style/mixins";
+
+@include b(image-block) {
+  position: relative;
+  display: block;
+  @include e(warp) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    @include m(flex) {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+
+    @include m(float) {
+      @include clearfix();
+    }
+  }
+
+  @include e(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}

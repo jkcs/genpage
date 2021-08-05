@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import button from '@/button'
 import { createBEM } from '@/utils'
 
-describe('goods', () => {
+describe('button', () => {
   const { name, bem } = createBEM('button')
 
   it('renders slot when passed', () => {

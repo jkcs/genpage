@@ -1,0 +1,17 @@
+@import "../style/mixins";
+
+@include b(image-block-item) {
+  @include m(flex) {
+    flex: 1;
+    content: " ";
+    height: 100%;
+  }
+  @include m(float) {
+    float: left;
+    width: 50%;
+    height: 100%;
+    &:nth-child(n+2) {
+      height: 50%;
+    }
+  }
+}

@@ -10,30 +10,32 @@ const {
 export type ImageFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'
 export type ImageEvents = 'auto' | 'none' | 'unset' | 'initial' | 'inherit'
 
+export const ImageProps = {
+  fit: String as PropType<ImageFit>,
+
+  src: String,
+
+  alt: String,
+
+  width: [Number, String],
+
+  height: [Number, String],
+
+  radius: [Number, String],
+
+  /**
+   * 在 img 标签上的原生 style pointer-events 的值
+   */
+  events: {
+    type: String as PropType<ImageEvents>,
+    default: 'none'
+  }
+}
+
 export default defineComponent({
     name,
 
-    props: {
-      fit: String as PropType<ImageFit>,
-
-      src: String,
-
-      alt: String,
-
-      width: [Number, String],
-
-      height: [Number, String],
-
-      radius: [Number, String],
-
-      /**
-       * 在 img 标签上的原生 style pointer-events 的值
-       */
-      events: {
-        type: String as PropType<ImageEvents>,
-        default: 'none'
-      }
-    },
+    props: ImageProps,
 
     setup (props, ctx) {
       const style = computed<CSSProperties>(() => {
