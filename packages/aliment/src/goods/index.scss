@@ -3,9 +3,6 @@
   width: 100%;
   min-width: 100px;
   padding: 10px 0 5px;
-  & + & {
-    margin-left: 10px;
-  }
   @include e(img) {
     width: 100%;
     height: 100%;

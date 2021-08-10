@@ -1,7 +1,7 @@
 import { isDef, isNumeric } from '../shared'
 
 export function hasUnit (value: string): boolean {
-  const units = ['px', '%', 'em', 'rem']
+  const units = ['px', 'pt', '%', 'em', 'rem']
 
   return units.some(unit => value.slice(value.length - unit.length, value.length) === unit)
 }
