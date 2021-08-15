@@ -1,11 +1,8 @@
 <template>
   <div class="gen-platform">
-    <gen-side>
-      1111
+    <gen-side v-model:value="left.visible">
+      left
     </gen-side>
-    <aside class="left">
-      11
-    </aside>
     <main class="center">
       <div class="container">
         <gen-container
@@ -13,9 +10,10 @@
         >
         </gen-container>
       </div>
-
     </main>
-    <div class="right">22</div>
+    <gen-side direction="right" v-model:value="right.visible">
+      right
+    </gen-side>
   </div>
 </template>
 
@@ -30,6 +28,12 @@ export default {
   },
   data (): Record<string, unknown> {
     return {
+      left: {
+        visible: true
+      },
+      right: {
+        visible: true
+      },
       componentList: [
         {
           id: 1,
@@ -85,17 +89,6 @@ export default {
     height: 100%;
     position: relative;
     overflow: hidden;
-    &::after {
-      display: table-cell;
-      content: "";
-      clear: both;
-    }
-    .left, .right {
-      width: 500px;
-      height: 100%;
-      background-color: deepskyblue;
-      float: left;
-    }
     .center {
       position: absolute;
       left: 50%;
@@ -112,17 +105,13 @@ export default {
         height: 750px;
         overflow-y: scroll;
         box-shadow: 0 0 10px 1px rgb(0 0 0 / 30%);
-        background-color: rgba(0, 0, 0, .3);
         &::-webkit-scrollbar {
           width: 0 !important;
         }
+        -ms-overflow-style: none;
+        overflow: -moz-scrollbars-none;
       }
-      //background-color: #ff4230;
       box-sizing: border-box;
-    }
-    .right {
-      background-color: #ff4230;
-      float: right;
     }
   }
 </style>
