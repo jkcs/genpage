@@ -21,10 +21,9 @@ function buildAllComponentsJs() {
   constComponents = constComponents.join(', ')
   vueUse = vueUse.join(CRLF)
 
-  return`import { App } from 'vue'
-${importComponents}
+  return`${importComponents}
 
-const install = function(app: App) {
+const install = function(app: any) {
 ${vueUse}
 }
 
