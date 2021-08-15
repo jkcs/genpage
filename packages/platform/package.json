@@ -9,9 +9,11 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@genpage/aliment": "file:../aliment",
+    "normalize.css": "^8.0.1",
     "vue": "^3.0.0",
-    "vuedraggable": "^4.0.3",
-    "@genpage/aliment": "file:../aliment"
+    "vue-router": "^4.0.11",
+    "vuedraggable": "^4.0.3"
   },
   "devDependencies": {
     "@genpage/vue-cli-plugin-genpage": "file:../vue-cli-plugin-genpage",
@@ -34,6 +36,7 @@
     "eslint-plugin-vue": "^7.0.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
+    "svg-sprite-loader": "^6.0.9",
     "typescript": "~4.1.5",
     "vue-jest": "^5.0.0-0"
   },

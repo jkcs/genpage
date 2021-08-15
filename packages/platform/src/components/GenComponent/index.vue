@@ -1,14 +1,12 @@
 <template>
-  <div class="gen-component">
-    <component
-      v-if="schema.name"
-      :is="schema.name"
-      v-bind="schema.bind"
-      v-on="schema.event || {}"
-    >
-      <slot/>
-    </component>
-  </div>
+  <component
+    v-if="schema.name"
+    :is="schema.name"
+    v-bind="schema.bind"
+    v-on="schema.event || {}"
+  >
+    <slot/>
+  </component>
 </template>
 
 <script lang="ts">
@@ -26,7 +24,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss" module scoped>
-.gen-component {
 
-}
 </style>
