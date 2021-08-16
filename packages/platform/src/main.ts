@@ -5,7 +5,7 @@ import 'normalize.css'
 import aliment from '@genpage/aliment'
 import '@genpage/aliment/lib/index.css'
 import '@/assets/css/index.scss'
-import './assets/icons/index'
+import '@/assets/icons'
 import Icon from './components/Icon/index.vue'
 
 const app = createApp(App)
